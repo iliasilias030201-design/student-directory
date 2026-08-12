@@ -18,10 +18,11 @@
         .filter-btn { background: var(--border); color: var(--text); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
         .filter-btn.active { background: #3b82f6; color: white; }
         ul { list-style-type: none; padding: 0; max-height: 400px; overflow-y: auto; }
-        li { margin: 8px 0; background: var(--border); padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        li { margin: 10px 0; background: var(--border); padding: 12px 14px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        li a { flex: 1; min-width: 120px; word-break: break-word; }
         a { color: #38bdf8; text-decoration: none; font-weight: 500; cursor: pointer; }
         a:hover { text-decoration: underline; }
-        .meta { color: var(--meta); font-size: 0.85rem; display: flex; gap: 10px; align-items: center; }
+        .meta { color: var(--meta); font-size: 0.85rem; display: flex; gap: 10px; align-items: center; white-space: nowrap; }
         .vote-btn { background: #0f172a; color: #38bdf8; border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
         .vote-btn:hover { background: #3b82f6; color: white; }
         .submit-section { margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
@@ -131,7 +132,6 @@
         function upvote(index, event) {
             event.stopPropagation();
             tools[index].votes = (tools[index].votes || 10) + 1;
-            // Update storage if user tool
             let uIndex = userTools.findIndex(t => t.name === tools[index].name);
             if (uIndex !== -1) {
                 userTools[uIndex].votes = tools[index].votes;
