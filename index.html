@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Tools & AI Workspace</title>
+    <title>Ultimate Student Directory & Workspace</title>
     <style>
         :root {
             --bg: #0f172a;
@@ -165,12 +165,18 @@
     </div>
 
     <script>
-        // Default Dataset + LocalStorage Sync
+        // Expanded Curated Dataset
         const defaultTools = [
             { title: "Python Documentation", category: "Programming", desc: "Official Python language reference and tutorials.", url: "https://docs.python.org" },
             { title: "Wolfram|Alpha", category: "Math", desc: "Computational knowledge engine for equations and calculus.", url: "https://www.wolframalpha.com" },
             { title: "GitHub", category: "Programming", desc: "Host code, manage repositories, and collaborate.", url: "https://github.com" },
-            { title: "Notion", category: "Productivity", desc: "All-in-one workspace for notes, tasks, and study planning.", url: "https://www.notion.so" }
+            { title: "Notion", category: "Productivity", desc: "All-in-one workspace for notes, tasks, and study planning.", url: "https://www.notion.so" },
+            { title: "GeoGebra", category: "Math", desc: "Interactive geometry, algebra, statistics and calculus application.", url: "https://www.geogebra.org" },
+            { title: "Stack Overflow", category: "Programming", desc: "Community-driven Q&A platform for programmers and developers.", url: "https://stackoverflow.com" },
+            { title: "Desmos", category: "Math", desc: "Advanced online graphing calculator for mathematics.", url: "https://www.desmos.com" },
+            { title: "LeetCode", category: "Programming", desc: "Platform to help you enhance your coding skills and practice algorithms.", url: "https://leetcode.com" },
+            { title: "Anki", category: "Studying", desc: "Powerful, intelligent flashcard program utilizing spaced repetition.", url: "https://apps.ankiweb.net" },
+            { title: "Obsidian", category: "Productivity", desc: "Powerful knowledge base that works on local Markdown files.", url: "https://obsidian.md" }
         ];
 
         let userTools = JSON.parse(localStorage.getItem('student_user_tools') || '[]');
