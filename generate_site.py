@@ -1,9 +1,6 @@
 import csv
 import os
 
-os.makedirs("output", exist_ok=True)
-
-# Massive expanded dataset across multiple categories
 tools_data = [
     # Math & Science
     ("Desmos", "Math", "Free", "An advanced online graphing calculator and math tool.", "https://www.desmos.com"),
@@ -42,13 +39,11 @@ tools_data = [
     ("Forest", "Productivity", "Freemium", "Gamified focus timer app to prevent phone distraction while studying.", "https://www.forestapp.cc")
 ]
 
-# Write data to data.csv automatically
 with open("data.csv", mode="w", encoding="utf-8", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["Name", "Category", "Pricing", "Description", "Link"])
     writer.writerows(tools_data)
 
-# Modern template with clean CSS styling and SEO meta tags
 template = """
 <!DOCTYPE html>
 <html lang="en">
@@ -94,12 +89,11 @@ with open("data.csv", mode="r", encoding="utf-8") as file:
             link=row['Link']
         )
         
-        with open(os.path.join("output", filename), "w", encoding="utf-8") as f:
+        with open(filename, "w", encoding="utf-8") as f:
             f.write(page_content)
             
         index_links.append(f'<li style="margin: 10px 0;"><a href="{filename}" style="color: #38bdf8; text-decoration: none; font-size: 1.1rem;">{row["Name"]}</a> <span style="color: #94a3b8; font-size: 0.9rem;">({row["Category"]} - {row["Pricing"]})</span></li>')
 
-# Generate main directory index page
 index_content = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +121,7 @@ index_content = f"""
 </html>
 """
 
-with open(os.path.join("output", "index.html"), "w", encoding="utf-8") as f:
+with open("index.html", "w", encoding="utf-8") as f:
     f.write(index_content)
 
-print("Massive SEO website bundle successfully generated!")
+print("Website generated directly in root folder!")
