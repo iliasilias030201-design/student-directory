@@ -215,6 +215,11 @@
         let userTools = JSON.parse(localStorage.getItem('student_user_tools') || '[]');
         let currentUser = localStorage.getItem('student_current_user') || '';
 
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            filterTools();
+        });
+
         function checkAuth() {
             if (currentUser) {
                 document.getElementById('loggedOutView').style.display = 'none';
@@ -229,11 +234,13 @@
         }
 
         function handleSimpleLogin() {
-            let nameInput = document.getElementById('authNameInput').value.trim();
+            let nameInput = document.getElementById('authNameInput');
             if(!nameInput) return;
-            currentUser = nameInput;
+            let uname = nameInput.value.trim();
+            if(!uname) return;
+            currentUser = uname;
             localStorage.setItem('student_current_user', currentUser);
-            document.getElementById('authNameInput').value = '';
+            nameInput.value = '';
             checkAuth();
         }
 
@@ -243,8 +250,9 @@
             checkAuth();
         }
 
-        async function askAssistant() {
+        function askAssistant() {
             let inputField = document.getElementById('assistantPrompt');
+            if(!inputField) return;
             let prompt = inputField.value.trim();
             if(!prompt) return;
             
@@ -254,192 +262,17 @@
             chatLog.scrollTop = chatLog.scrollHeight;
 
             let loadingId = "load_" + Date.now();
-            chatLog.innerHTML += `<br><br><strong id="${loadingId}">Assistant:</strong> Analyzing request...`;
+            chatLog.innerHTML += `<br><br><strong id="${loadingId}">Assistant:</strong> Analyzing...`;
             chatLog.scrollTop = chatLog.scrollHeight;
 
-            // Simulate contextual awareness of active directory filters and tools
             setTimeout(() => {
                 let loadEl = document.getElementById(loadingId);
                 if(loadEl) loadEl.innerText = "Assistant:";
                 
-                let reply = ` I see you are looking into "${prompt}". Based on your current student workflow and active directory filters, I recommend checking out the top-voted Math and Programming categories above for optimal resources!`;
-                chatLog.innerHTML += reply;
+                chatLog.innerHTML += ` I've reviewed your request about "${prompt}". Check out the top-ranked tools and categories in your directory above to build your ideal workflow!`;
                 chatLog.scrollTop = chatLog.scrollHeight;
-            }, 600);
+            }, 500);
         }
-
-        async function askAssistant() {
-            let inputField = document.getElementById('aiPrompt');
-            let prompt = inputField.value.trim();
-            if(!prompt) return;
-            
-            let chatLog = document.getElementById('assistantChatLog');
-            chatLog.innerHTML += `<br><br><strong>You:</strong> ${prompt}`;
-            inputField.value = '';
-            chatLog.scrollTop = chatLog.scrollHeight;
-
-            let loadingId = "load_" + Date.now();
-            chatLog.innerHTML += `<br><br><strong id="${loadingId}">Gemini 2.5:</strong> Thinking...`;
-            chatLog.scrollTop = chatLog.scrollHeight;
-
-            try {
-                // Utilizing Gemini 2.5 Flash API endpoint via secure public gateway or fetch
-                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyDummyKeyForDemoPurposesOnly`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "You are a helpful student assistant inside a directory site. Answer concisely: " + prompt }] }] })
-                });
-                
-                // Fallback simulation if network or API key restrictions apply in static pages
-                document.getElementById(loadingId).innerText = "Gemini 2.5:";
-                chatLog.innerHTML += ` That's a great question regarding "${prompt}". Make sure to check out the matching math or programming tools listed above in the directory for deep-dive problem solving!`;
-            } catch(e) {
-                document.getElementById(loadingId).innerText = "Gemini 2.5:";
-                chatLog.innerHTML += ` I'm here and ready to help you optimize your 2Bac and workflow resources!`;
-            }
-            chatLog.scrollTop = chatLog.scrollHeight;
-        }
-        let tools = [...userTools, ...baseTools];
-        let currentCategory = 'All';
-
-        function toggleTheme() {
-            document.body.classList.toggle('light');
-        }
-
-        function setCategory(cat, btn) {
-            currentCategory = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            checkAuth();
-            filterTools();
-        }
-
-        function getSimilarity(s1, s2) {
-            let longer = s1, shorter = s2;
-            if (s1.length < s2.length) { longer = s2; shorter = s1; }
-            let longerLength = longer.length;
-            if (longerLength === 0) return 1.0;
-            return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-        }
-
-        function editDistance(s1, s2) {
-            s1 = s1.toLowerCase(); s2 = s2.toLowerCase();
-            let costs = new Array();
-            for (let i = 0; i <= s1.length; i++) {
-                let lastValue = i;
-                for (let j = 0; j <= s2.length; j++) {
-                    if (i == 0) costs[j] = j;
-                    else {
-                        if (j > 0) {
-                            let newValue = costs[j - 1];
-                            if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-                            costs[j - 1] = lastValue;
-                            lastValue = newValue;
-                        }
-                    }
-                }
-                if (s1.length > 0) costs[s2.length] = lastValue;
-            }
-            return costs[s2.length];
-        }
-
-        function upvote(index, event) {
-            event.stopPropagation();
-            tools[index].votes = (tools[index].votes || 10) + 1;
-            let uIndex = userTools.findIndex(t => t.name === tools[index].name);
-            if (uIndex !== -1) {
-                userTools[uIndex].votes = tools[index].votes;
-                localStorage.setItem('student_user_tools', JSON.stringify(userTools));
-            }
-            checkAuth();
-            filterTools();
-        }
-
-        function openModal(name, cat, desc, votes) {
-            document.getElementById("modalTitle").innerText = name;
-            document.getElementById("modalCat").innerText = cat;
-            document.getElementById("modalDesc").innerText = desc || "Custom user-submitted student workflow utility.";
-            document.getElementById("modalVotes").innerText = "Upvotes: " + (votes || 10);
-            document.getElementById("toolModal").style.display = "flex";
-        }
-
-        function closeModal() {
-            document.getElementById("toolModal").style.display = "none";
-        }
-
-        function displayTools(data) {
-            const listEl = document.getElementById("toolList");
-            listEl.innerHTML = "";
-            data.slice(0, 50).forEach(tool => {
-                let originalIndex = tools.findIndex(t => t.name === tool.name);
-                let li = document.createElement("li");
-                
-                let linkHtml = tool.url !== "#" ? 
-                    `<a href="${tool.url}" target="_blank">${tool.name}</a>` : 
-                    `<a onclick="openModal('${tool.name}', '${tool.category}', '${tool.description}', ${tool.votes})">${tool.name}</a>`;
-
-                li.innerHTML = `
-                    ${linkHtml}
-                    <div class="meta">
-                        <span>${tool.category}</span>
-                        <button class="vote-btn" onclick="upvote(${originalIndex}, event)">&#9650; ${tool.votes || 10}</button>
-                    </div>`;
-                listEl.appendChild(li);
-            });
-        }
-
-        function filterTools() {
-            let query = document.getElementById("searchInput").value.toLowerCase().trim();
-            
-            let filtered = tools.filter(tool => {
-                let matchesCategory = (currentCategory === 'All' || tool.category === currentCategory);
-                return matchesCategory;
-            });
-
-            if (query !== "") {
-                filtered = filtered.map(tool => {
-                    let nameLower = tool.name.toLowerCase();
-                    let score = 0;
-                    if (nameLower.includes(query)) score += 2;
-                    let sim = getSimilarity(nameLower, query);
-                    if (sim > 0.4) score += sim;
-                    return { tool, score };
-                }).filter(item => item.score > 0);
-                
-                filtered.sort((a, b) => b.score - a.score);
-                filtered = filtered.map(item => item.tool);
-            }
-
-            displayTools(filtered);
-        }
-
-        function addTool() {
-            let name = document.getElementById("newToolName").value.trim();
-            let cat = document.getElementById("newToolCat").value;
-            if(name === "") return;
-            
-            let newObj = {
-                name: name,
-                category: cat,
-                pricing: "Free",
-                url: "#",
-                votes: 1,
-                description: "Custom user-submitted student workflow utility."
-            };
-            
-            userTools.unshift(newObj);
-            tools.unshift(newObj);
-            localStorage.setItem('student_user_tools', JSON.stringify(userTools));
-            
-            document.getElementById("newToolName").value = "";
-            document.getElementById("submitMsg").innerText = "Success! Saved permanently to browser storage.";
-            checkAuth();
-            filterTools();
-        }
-
-        checkAuth();
-            filterTools();
     </script>
 </body>
 </html>
