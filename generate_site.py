@@ -91,6 +91,8 @@ template = """
 """
 
 index_items = []
+sitemap_urls = ["<url><loc>https://iliasilias030201-design.github.io/student-directory/</loc><priority>1.0</priority></url>"]
+
 for tool in tools_data:
     filename = tool['name'].lower().replace(' ', '-').replace('/', '-') + ".html"
     features_html = "".join([f'<div class="feature-tag">&#10003; {f}</div>' for f in tool['features']])
@@ -115,6 +117,13 @@ for tool in tools_data:
         "pricing": tool['pricing'],
         "url": filename
     })
+    
+    sitemap_urls.append(f"<url><loc>https://iliasilias030201-design.github.io/student-directory/{filename}</loc><priority>0.8</priority></url>")
+
+# Generate sitemap.xml for Google SEO indexation
+sitemap_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(sitemap_urls) + '\n</urlset>'
+with open("sitemap.xml", "w", encoding="utf-8") as f:
+    f.write(sitemap_content)
 
 index_json = json.dumps(index_items)
 
@@ -133,15 +142,18 @@ index_content = f"""
         .header-flex {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 1.5rem; }}
         h1 {{ margin: 0; color: var(--text); font-size: 1.5rem; }}
         button.theme-toggle {{ background: var(--border); color: var(--text); border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }}
-        input[type="text"] {{ width: 100%; padding: 12px; font-size: 1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; margin-bottom: 1rem; outline: none; }}
+        input[type="text"], select {{ width: 100%; padding: 12px; font-size: 1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; margin-bottom: 1rem; outline: none; }}
         .filters {{ display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }}
         .filter-btn {{ background: var(--border); color: var(--text); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }}
         .filter-btn.active {{ background: #3b82f6; color: white; }}
-        ul {{ list-style-type: none; padding: 0; max-height: 450px; overflow-y: auto; }}
+        ul {{ list-style-type: none; padding: 0; max-height: 400px; overflow-y: auto; }}
         li {{ margin: 8px 0; background: var(--border); padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }}
         a {{ color: #38bdf8; text-decoration: none; font-weight: 500; }}
         a:hover {{ text-decoration: underline; }}
         .meta {{ color: var(--meta); font-size: 0.85rem; }}
+        .submit-section {{ margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }}
+        .submit-section h3 {{ margin-top: 0; }}
+        button.submit-btn {{ background: #22c55e; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }}
     </style>
 </head>
 <body>
@@ -164,6 +176,21 @@ index_content = f"""
         </div>
 
         <ul id="toolList"></ul>
+
+        <div class="submit-section">
+            <h3>Submit a New Tool</h3>
+            <input type="text" id="newToolName" placeholder="Tool Name (e.g., Notion)">
+            <select id="newToolCat">
+                <option value="Productivity">Productivity</option>
+                <option value="Math">Math</option>
+                <option value="Programming">Programming</option>
+                <option value="Studying">Studying</option>
+                <option value="Writing">Writing</option>
+                <option value="Research">Research</option>
+            </select>
+            <button class="submit-btn" onclick="addTool()">Add to Directory</button>
+            <p id="submitMsg" style="color: #22c55e; font-size: 0.9rem; margin-top: 8px;"></p>
+        </div>
     </div>
 
     <script>
@@ -216,7 +243,7 @@ index_content = f"""
             listEl.innerHTML = "";
             data.slice(0, 50).forEach(tool => {{
                 let li = document.createElement("li");
-                li.innerHTML = `<a href="${{tool.url}}">${{tool.name}}</a> <span class="meta">${{tool.category}} | ${{tool.pricing}}</span>`;
+                li.innerHTML = `<a href="${{tool.url}}" target="_blank">${{tool.name}}</a> <span class="meta">${{tool.category}} | ${{tool.pricing}}</span>`;
                 listEl.appendChild(li);
             }});
         }}
@@ -246,6 +273,23 @@ index_content = f"""
             displayTools(filtered);
         }}
 
+        function addTool() {{
+            let name = document.getElementById("newToolName").value.trim();
+            let cat = document.getElementById("newToolCat").value;
+            if(name === "") return;
+            
+            tools.unshift({{
+                name: name,
+                category: cat,
+                pricing: "Free",
+                url: "#"
+            }});
+            
+            document.getElementById("newToolName").value = "";
+            document.getElementById("submitMsg").innerText = "Success! Tool added to local view.";
+            filterTools();
+        }}
+
         displayTools(tools);
     </script>
 </body>
@@ -255,4 +299,4 @@ index_content = f"""
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(index_content)
 
-print("All features added successfully!")
+print("Sitemap and Submission Form added successfully!")
