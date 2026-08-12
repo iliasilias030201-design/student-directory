@@ -20,7 +20,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-        /* WELCOME OVERLAY */
         #welcomeOverlay {
             position: fixed; inset: 0; background: rgba(5, 8, 15, 0.95); z-index: 10000;
             display: flex; align-items: center; justify-content: center; padding: 20px;
@@ -40,7 +39,6 @@
         .step-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.95rem; color: var(--meta); }
         .step-item span { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
 
-        /* MAIN APP LAYOUT */
         .app-container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
         header {
             display: flex; justify-content: space-between; align-items: center;
@@ -56,7 +54,6 @@
         .google-search-bar:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2); }
         .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--meta); }
 
-        /* USER MENU & 3-DOTS DROPDOWN */
         .user-menu-wrapper { position: relative; display: flex; align-items: center; gap: 12px; }
         .profile-btn { display: flex; align-items: center; gap: 10px; background: #090d16; border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px; cursor: pointer; color: var(--text); font-weight: 500; font-size: 0.9rem; }
         .dots-btn { background: #090d16; border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
@@ -69,7 +66,6 @@
         .dropdown-item { padding: 12px 15px; display: block; color: var(--text); text-decoration: none; font-size: 0.9rem; border: none; background: transparent; width: 100%; text-align: left; cursor: pointer; }
         .dropdown-item:hover { background: rgba(255,255,255,0.05); }
 
-        /* AUTH MODAL FOR ONE-CLICK SIMULATED GOOGLE AUTH */
         #authModal {
             position: fixed; inset: 0; background: rgba(5, 8, 15, 0.8); z-index: 10001;
             display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);
@@ -80,12 +76,11 @@
         }
         .google-auth-btn {
             background: white; color: #1e293b; border: none; width: 100%; padding: 12px; border-radius: 8px;
-            font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;
+            font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.2s;
         }
         .google-auth-btn:hover { background: #f1f5f9; }
 
-        /* MAIN GRID & CATEGORIES */
         .main-layout { display: grid; grid-template-columns: 260px 1fr; gap: 20px; }
         @media(max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
         
@@ -106,7 +101,6 @@
         .tool-card:hover { transform: translateY(-3px); border-color: var(--primary); }
         .badge { font-size: 0.7rem; background: rgba(99,102,241,0.2); color: #818cf8; padding: 4px 10px; border-radius: 20px; font-weight: bold; width: fit-content; margin-bottom: 10px; }
 
-        /* FLOATING GEMINI AI BUTTON & MODAL */
         .ai-float-btn {
             position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, #6366f1, #06b6d4);
             color: white; border: none; width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 10px 25px rgba(99,102,241,0.5);
@@ -139,15 +133,14 @@
 </head>
 <body>
 
-    <!-- WELCOME MODAL WITH SKIP BUTTON -->
     <div id="welcomeOverlay">
         <div class="welcome-card">
             <button class="skip-btn" onclick="skipWelcome()">Skip Intro ➔</button>
             <h2 style="margin-bottom: 10px;">Welcome to Nexus Student Hub 🚀</h2>
-            <p style="color: var(--meta); font-size: 0.95rem; line-height: 1.5;">Your ultimate academic powerhouse featuring 500+ fully verified resources, instant Google account authentication, ultra-fast live search matching, and an intelligent Gemini AI Study Assistant.</p>
+            <p style="color: var(--meta); font-size: 0.95rem; line-height: 1.5;">Your ultimate academic powerhouse featuring 500+ fully verified resources, instant Google and Password authentication, ultra-fast live search matching, and an intelligent Gemini AI Study Assistant.</p>
             
             <div class="feature-steps">
-                <div class="step-item"><span>1</span> One-click secure Google Sign-In with full profile session management.</div>
+                <div class="step-item"><span>1</span> Secure Google Sign-In or traditional email & password account access.</div>
                 <div class="step-item"><span>2</span> Enhanced multi-keyword smart search across all 500+ categorized tools.</div>
                 <div class="step-item"><span>3</span> Persistent AI assistant panel that retains your live conversation history when closed.</div>
             </div>
@@ -156,23 +149,32 @@
         </div>
     </div>
 
-    <!-- GOOGLE AUTH POPUP MODAL -->
+    <!-- AUTH MODAL WITH GOOGLE & PASSWORD SUPPORT -->
     <div id="authModal">
         <div class="auth-card">
             <h3 style="margin-bottom: 10px;">Sign in to Nexus Hub</h3>
-            <p style="color: var(--meta); font-size: 0.9rem; margin-bottom: 20px;">Connect your Google account to unlock secure downloads and personalized session history.</p>
+            <p style="color: var(--meta); font-size: 0.9rem; margin-bottom: 20px;">Connect via Google or use your email and password.</p>
+            
             <button class="google-auth-btn" onclick="performGoogleLogin()">
                 <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.19-1.84H9v3.49h4.84c-.21 1.13-.86 2.08-1.82 2.72v2.26h2.94c1.72-1.58 2.72-3.9 2.72-6.63z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.94-2.26c-.81.54-1.84.86-3.02.86-2.34 0-4.32-1.58-5.03-3.71H.95v2.33C2.43 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.71c-.18-.54-.28-1.12-.28-1.71s.1-1.17.28-1.71V4.96H.95C.35 6.15 0 7.52 0 9s.35 2.85.95 4.04l3.02-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.48 0 2.43 2.02.95 4.96l3.02 2.33c.71-2.13 2.69-3.71 5.03-3.71z"/></svg>
                 Continue with Google
             </button>
+
+            <div style="margin: 15px 0; color: var(--meta); font-size: 0.85rem; display: flex; align-items: center; gap: 10px;">
+                <div style="flex: 1; height: 1px; background: var(--border);"></div> OR <div style="flex: 1; height: 1px; background: var(--border);"></div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+                <input type="email" id="authEmailInput" placeholder="Email address" class="ai-input" style="width: 100%;">
+                <input type="password" id="authPasswordInput" placeholder="Password (6+ characters)" class="ai-input" style="width: 100%;">
+                <button class="btn-primary" style="width: 100%; margin-top: 5px;" onclick="handleEmailPasswordAuth()">Sign In / Register</button>
+            </div>
+
             <button onclick="document.getElementById('authModal').style.display='none'" style="background: transparent; border: none; color: var(--meta); margin-top: 15px; cursor: pointer; font-size: 0.85rem;">Cancel</button>
         </div>
     </div>
 
-    <!-- MAIN APP INTERFACE -->
     <div class="app-container" id="appContainer">
-        
-        <!-- HEADER -->
         <header>
             <div class="logo-area">
                 <span style="color: var(--primary);">⚡</span> Nexus Hub
@@ -184,7 +186,6 @@
             </div>
 
             <div class="user-menu-wrapper">
-                <!-- Auth Trigger / Profile Badge -->
                 <div id="authArea">
                     <button class="profile-btn" onclick="openAuthModal()">Sign In</button>
                 </div>
@@ -195,7 +196,6 @@
                     </div>
                 </div>
 
-                <!-- 3-Dots Menu -->
                 <div style="position: relative;">
                     <button class="dots-btn" onclick="toggleDropdown(event)">⋮</button>
                     <div class="dropdown-menu" id="dropdownMenu">
@@ -210,9 +210,7 @@
             </div>
         </header>
 
-        <!-- MAIN LAYOUT -->
         <div class="main-layout">
-            <!-- CATEGORIES SIDEBAR -->
             <aside class="sidebar">
                 <h3 style="font-size: 1rem; margin-bottom: 10px;">Categories</h3>
                 <div class="category-list" id="categoryList">
@@ -225,16 +223,12 @@
                 </div>
             </aside>
 
-            <!-- TOOLS GRID CONTAINER -->
             <main class="content-area">
-                <div class="tools-grid" id="toolsGrid">
-                    <!-- Populated dynamically -->
-                </div>
+                <div class="tools-grid" id="toolsGrid"></div>
             </main>
         </div>
     </div>
 
-    <!-- FLOATING GEMINI AI ASSISTANT -->
     <button class="ai-float-btn" onclick="toggleAIModal()" title="Open Study Assistant">🤖</button>
     
     <div class="ai-modal" id="aiModal">
@@ -252,7 +246,6 @@
     </div>
 
     <script>
-        // --- 500+ CURATED TOOLS GENERATOR (Fully working links and data) ---
         const baseTools = [
             { title: "Python 3.12 Core Documentation", category: "Programming", desc: "Official reference manual, built-in libraries, and syntax guides.", url: "https://docs.python.org" },
             { title: "Wolfram|Alpha Computational Engine", category: "Math", desc: "Solve complex integrals, differential equations, and matrix algebra.", url: "https://www.wolframalpha.com" },
@@ -266,7 +259,6 @@
             { title: "Hugging Face ML Hub", category: "AI Tools", desc: "Access state-of-the-art transformer models, datasets, and pipelines.", url: "https://huggingface.co" }
         ];
 
-        // Generate full verified dataset of 500+ items with real functional URLs
         const categoriesList = ["Programming", "Math", "Productivity", "Physics", "AI Tools"];
         let allTools = [...baseTools];
         for(let i = 11; i <= 500; i++) {
@@ -282,7 +274,6 @@
         let searchHistory = JSON.parse(localStorage.getItem('nexus_search_history') || '[]');
         let currentCategory = 'All';
 
-        // --- WELCOME & INITIALIZATION ---
         function skipWelcome() {
             document.getElementById('welcomeOverlay').style.opacity = '0';
             setTimeout(() => {
@@ -293,7 +284,6 @@
             }, 300);
         }
 
-        // --- RENDER TOOLS & CATEGORIES ---
         function renderTools(toolsToRender) {
             const grid = document.getElementById('toolsGrid');
             grid.innerHTML = '';
@@ -327,7 +317,6 @@
             applyEnhancedSearch();
         }
 
-        // --- ENHANCED GOOGLE-GRADE SMART SEARCH ---
         function handleSearch() {
             applyEnhancedSearch();
         }
@@ -348,7 +337,6 @@
                 if(!matchesCat) return false;
                 if(keywords.length === 0) return true;
 
-                // Multi-keyword scoring search across title and description
                 let textBlob = (t.title + " " + t.desc + " " + t.category).toLowerCase();
                 return keywords.every(kw => textBlob.includes(kw));
             });
@@ -356,7 +344,6 @@
             renderTools(filtered);
         }
 
-        // --- AUTHENTICATION & DROPDOWN ---
         function openAuthModal() {
             document.getElementById('authModal').style.display = 'flex';
         }
@@ -366,6 +353,44 @@
             localStorage.setItem('nexus_user', JSON.stringify(mockUser));
             updateAuthUI(mockUser);
             document.getElementById('authModal').style.display = 'none';
+        }
+
+        function handleEmailPasswordAuth() {
+            let email = document.getElementById('authEmailInput').value.trim();
+            let password = document.getElementById('authPasswordInput').value.trim();
+
+            if(!email || !password) {
+                alert("Please enter both an email and a password.");
+                return;
+            }
+
+            if(password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+
+            let savedUsers = JSON.parse(localStorage.getItem('nexus_registered_users') || '{}');
+
+            if(savedUsers[email]) {
+                if(savedUsers[email] === password) {
+                    let mockUser = { name: email.split('@')[0], email: email };
+                    localStorage.setItem('nexus_user', JSON.stringify(mockUser));
+                    updateAuthUI(mockUser);
+                    document.getElementById('authModal').style.display = 'none';
+                    alert("Welcome back, " + mockUser.name + "!");
+                } else {
+                    alert("Incorrect password. Please try again.");
+                }
+            } else {
+                savedUsers[email] = password;
+                localStorage.setItem('nexus_registered_users', JSON.stringify(savedUsers));
+
+                let mockUser = { name: email.split('@')[0], email: email };
+                localStorage.setItem('nexus_user', JSON.stringify(mockUser));
+                updateAuthUI(mockUser);
+                document.getElementById('authModal').style.display = 'none';
+                alert("Account created and signed in successfully!");
+            }
         }
 
         function toggleDropdown(e) {
@@ -404,7 +429,6 @@
             alert("Signed out successfully.");
         }
 
-        // --- GEMINI 2.5 AI ASSISTANT PANEL ---
         function toggleAIModal() {
             document.getElementById('aiModal').classList.toggle('active');
         }
@@ -426,11 +450,10 @@
             }, 600);
         }
 
-        // --- FEATURES & UTILITIES ---
         function simulateDownload(toolName) {
             let user = localStorage.getItem('nexus_user');
             if(!user) {
-                alert('Please sign in with Google to enable secure resource downloads.');
+                alert('Please sign in or register to enable secure resource downloads.');
                 openAuthModal();
                 return;
             }
