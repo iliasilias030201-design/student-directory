@@ -1,372 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Hub — Ultimate Academic & Developer Portal</title>
-    <meta name="description" content="Access 500+ verified academic utilities, programming documentation, advanced math tools, and AI study assistants.">
-    <meta property="og:title" content="Nexus Student Hub">
-    <meta property="og:description" content="All-in-one platform for students, developers, and researchers.">
-    <meta name="theme-color" content="#090d16">
-    <style>
-        :root {
-            --bg: #090d16;
-            --card: #131c2e;
-            --card-hover: #1a263e;
-            --border: #1e293b;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --accent: #06b6d4;
-            --text: #f8fafc;
-            --meta: #94a3b8;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --radius: 12px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>Nexus Hub — Academic & Developer Resource Portal</title>
+<meta name="description" content="Discover verified academic utilities, programming documentation, mathematics tools, research resources, productivity apps, and AI utilities.">
+<meta property="og:title" content="Nexus Hub">
+<meta property="og:description" content="A curated hub for students, developers, and researchers.">
+<meta name="theme-color" content="#090d16">
 
-        [data-theme="light"] {
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --card-hover: #f1f5f9;
-            --border: #e2e8f0;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --accent: #0284c7;
-            --text: #0f172a;
-            --meta: #64748b;
-        }
+<style>
+:root{
+  --bg:#090d16;--card:#131c2e;--card-hover:#1a263e;--border:#2e3b52;
+  --primary:#6366f1;--primary-hover:#4f46e5;--accent:#06b6d4;
+  --text:#f8fafc;--meta:#cbd5e1;--success:#10b981;--danger:#ef4444;
+  --warning:#f59e0b;--radius:14px;--header-h:72px;
+}
+[data-theme="light"]{
+  --bg:#f8fafc;--card:#fff;--card-hover:#f1f5f9;--border:#cbd5e1;
+  --primary:#4f46e5;--primary-hover:#4338ca;--accent:#0284c7;
+  --text:#0f172a;--meta:#475569;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);min-height:100vh;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  transition:background .25s,color .25s;
+}
+button,input{font:inherit}
+button,a{ -webkit-tap-highlight-color:transparent }
+button{cursor:pointer}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 55%,transparent);outline-offset:2px}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.3s, color 0.3s; }
+/* HEADER */
+header{
+  min-height:var(--header-h);display:flex;align-items:center;gap:16px;
+  padding:12px 28px;background:color-mix(in srgb,var(--card) 90%,transparent);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;
+  backdrop-filter:blur(14px);
+}
+.logo-area{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.18rem;white-space:nowrap}
+.logo-badge{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:4px 8px;border-radius:6px;font-size:.7rem}
+.search-container{flex:1;max-width:620px;position:relative;margin:auto}
+.search-bar{
+  width:100%;padding:11px 42px 11px 42px;border-radius:30px;
+  border:1px solid var(--border);background:var(--bg);color:var(--text);
+  outline:0;transition:.2s;
+}
+.search-bar:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.22)}
+.search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--meta);pointer-events:none}
+.clear-search{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  border:0;background:transparent;color:var(--meta);width:30px;height:30px;border-radius:50%;
+  display:none;
+}
+.clear-search:hover{background:var(--card-hover);color:var(--text)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.btn-icon{
+  background:var(--bg);border:1px solid var(--border);color:var(--text);
+  width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  transition:.2s;
+}
+.btn-icon:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
 
-        /* HEADER */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--card); border-bottom: 1px solid var(--border); padding: 15px 30px;
-            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
-        }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.3rem; color: var(--text); }
-        .logo-badge { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; }
-        
-        .search-container { flex: 1; max-width: 550px; position: relative; margin: 0 20px; }
-        .search-bar {
-            width: 100%; padding: 12px 20px 12px 45px; border-radius: 30px; border: 1px solid var(--border);
-            background: var(--bg); color: var(--text); font-size: 0.95rem; outline: none; transition: all 0.2s;
-        }
-        .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.25); }
-        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--meta); }
+/* LAYOUT */
+.app-container{
+  width:min(1480px,100%);margin:auto;padding:25px;display:grid;
+  grid-template-columns:250px minmax(0,1fr);gap:25px;
+}
+.sidebar{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;height:max-content;position:sticky;top:90px;
+}
+.sidebar-title{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--meta);margin-bottom:12px;font-weight:800}
+.category-list{display:flex;flex-direction:column;gap:5px}
+.cat-btn{
+  width:100%;background:transparent;border:0;color:var(--meta);text-align:left;
+  padding:10px 12px;border-radius:9px;font-size:.92rem;font-weight:600;
+  display:flex;justify-content:space-between;align-items:center;transition:.2s;
+}
+.cat-btn:hover{background:var(--card-hover);color:var(--text)}
+.cat-btn.active{background:var(--primary);color:#fff}
+.count-pill{font-size:.72rem;opacity:.8}
+.content-area{min-width:0}
+.content-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px}
+.resource-count{color:var(--meta);font-size:.9rem}
+.sort-select{
+  background:var(--card);color:var(--text);border:1px solid var(--border);
+  border-radius:8px;padding:8px 10px;
+}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:17px}
+.tool-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:19px;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:235px;transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.tool-card:hover{transform:translateY(-3px);border-color:var(--primary);box-shadow:0 12px 25px rgba(0,0,0,.18)}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.badge{
+  display:inline-flex;align-items:center;font-size:.7rem;background:rgba(99,102,241,.14);
+  color:#a5b4fc;padding:4px 9px;border-radius:20px;font-weight:700;
+}
+.fav-btn{
+  background:transparent;border:0;color:var(--meta);font-size:1.15rem;
+  width:34px;height:34px;border-radius:50%;transition:.2s;
+}
+.fav-btn:hover{background:var(--card-hover);color:var(--warning)}
+.fav-btn.active{color:var(--warning)}
+.tool-title{font-size:1.05rem;font-weight:750;margin-bottom:7px}
+.tool-desc{font-size:.86rem;color:var(--meta);line-height:1.55;margin-bottom:16px}
+.tool-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.domain{font-size:.72rem;color:var(--meta);padding:4px 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.action-btns{display:flex;gap:9px}
+.btn-small{
+  flex:1;padding:9px 11px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-weight:700;font-size:.82rem;
+  text-align:center;text-decoration:none;transition:.2s;
+}
+.btn-small:hover{border-color:var(--primary);color:var(--primary)}
+.btn-primary-sm{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-primary-sm:hover{background:var(--primary-hover);color:#fff}
 
-        .nav-actions { display: flex; align-items: center; gap: 12px; }
-        .btn-icon { background: var(--bg); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .btn-icon:hover { border-color: var(--primary); color: var(--primary); }
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:28px}
+.page-btn{
+  padding:8px 14px;border:1px solid var(--border);background:var(--card);
+  color:var(--text);border-radius:8px;font-weight:700;transition:.2s;
+}
+.page-btn:hover:not(:disabled){background:var(--primary);border-color:var(--primary);color:#fff}
+.page-btn:disabled{opacity:.45;cursor:not-allowed}
+#pageIndicator{color:var(--meta);font-weight:700;font-size:.88rem}
 
-        /* LAYOUT */
-        .app-container { max-width: 1440px; margin: 0 auto; padding: 25px; display: grid; grid-template-columns: 260px 1fr; gap: 25px; }
-        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } header { padding: 15px; } }
+/* AI */
+.ai-float-btn{
+  position:fixed;right:22px;bottom:22px;background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;border:0;width:58px;height:58px;border-radius:50%;
+  box-shadow:0 9px 25px rgba(99,102,241,.38);font-size:1.45rem;z-index:1100;transition:.2s;
+}
+.ai-float-btn:hover{transform:scale(1.06)}
+.ai-modal{
+  position:fixed;right:22px;bottom:92px;width:390px;height:510px;
+  max-width:calc(100vw - 30px);max-height:calc(100vh - 115px);
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);display:none;flex-direction:column;
+  z-index:1200;overflow:hidden;
+}
+.ai-modal.active{display:flex;animation:slideUp .22s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.ai-header{padding:13px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ai-close{border:0;background:transparent;color:var(--meta);font-size:1.15rem;width:32px;height:32px;border-radius:7px}
+.ai-close:hover{background:var(--card-hover);color:var(--text)}
+.ai-body{flex:1;padding:14px;overflow:auto;display:flex;flex-direction:column;gap:9px;font-size:.88rem}
+.msg{padding:9px 12px;border-radius:10px;max-width:86%;line-height:1.45;word-break:break-word}
+.msg.user{background:var(--primary);color:#fff;align-self:flex-end}
+.msg.assistant{background:var(--bg);border:1px solid var(--border);align-self:flex-start}
+.typing-indicator{color:var(--meta);font-style:italic;font-size:.76rem;padding:4px 12px;display:none}
+.ai-footer{padding:10px;border-top:1px solid var(--border);background:var(--bg);display:flex;gap:8px}
+.ai-input{flex:1;min-width:0;background:var(--card);border:1px solid var(--border);padding:10px;border-radius:8px;color:var(--text);outline:0}
+.ai-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(99,102,241,.22)}
+.send-btn{flex:0 0 auto}
 
-        /* SIDEBAR */
-        .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; height: fit-content; position: sticky; top: 90px; }
-        .sidebar-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--meta); margin-bottom: 12px; font-weight: 700; }
-        .category-list { display: flex; flex-direction: column; gap: 6px; }
-        .cat-btn {
-            background: transparent; border: none; color: var(--meta); text-align: left; padding: 10px 14px;
-            border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center;
-        }
-        .cat-btn:hover, .cat-btn.active { background: var(--primary); color: white; }
+/* TOAST */
+#toastContainer{position:fixed;top:82px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{
+  background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);
+  color:var(--text);padding:11px 15px;border-radius:8px;font-size:.84rem;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);animation:toastIn .22s ease;
+}
+.toast.error{border-left-color:var(--danger)}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
 
-        /* CARDS GRID */
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-        .tool-card {
-            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
-            display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; position: relative;
-        }
-        .tool-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .badge { font-size: 0.75rem; background: rgba(99,102,241,0.15); color: #818cf8; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-        .fav-btn { background: none; border: none; color: var(--meta); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
-        .fav-btn.active { color: var(--warning); }
-        .tool-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-        .tool-desc { font-size: 0.88rem; color: var(--meta); line-height: 1.5; margin-bottom: 20px; }
-        
-        .action-btns { display: flex; gap: 10px; }
-        .btn-small { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 600; font-size: 0.85rem; cursor: pointer; text-align: center; text-decoration: none; transition: 0.2s; }
-        .btn-small:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-primary-sm { background: var(--primary); color: white; border: none; }
-        .btn-primary-sm:hover { background: var(--primary-hover); color: white; }
+/* EMPTY */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--meta);
+}
+.empty-state strong{display:block;color:var(--text);font-size:1.1rem;margin-bottom:6px}
+.hidden{display:none!important}
 
-        /* PAGINATION */
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; grid-column: 1 / -1; }
-        .page-btn { padding: 8px 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* AI CHAT FLOATING WINDOW */
-        .ai-float-btn { position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; width: 56px; height: 56px; border-radius: 50%; box-shadow: 0 8px 20px rgba(99,102,241,0.4); cursor: pointer; font-size: 1.5rem; z-index: 99; transition: transform 0.2s; }
-        .ai-float-btn:hover { transform: scale(1.1); }
-
-        .ai-modal { position: fixed; bottom: 95px; right: 25px; width: 380px; max-width: calc(100vw - 40px); height: 500px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: none; flex-direction: column; z-index: 1000; overflow: hidden; }
-        .ai-modal.active { display: flex; }
-        .ai-header { padding: 14px 18px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .ai-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; }
-        .ai-footer { padding: 12px; border-top: 1px solid var(--border); background: var(--bg); display: flex; gap: 8px; }
-        .ai-input { flex: 1; background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: var(--text); outline: none; }
-        
-        .msg { padding: 10px 14px; border-radius: 10px; max-width: 85%; font-size: 0.9rem; line-height: 1.4; word-break: break-word; }
-        .msg.user { background: var(--primary); color: white; align-self: flex-end; }
-        .msg.assistant { background: var(--bg); border: 1px solid var(--border); color: var(--text); align-self: flex-start; }
-
-        /* TOAST SYSTEM */
-        #toastContainer { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--primary); color: var(--text); padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    </style>
+@media(max-width:900px){
+  header{flex-wrap:wrap;padding:11px 15px;gap:10px}
+  .logo-area{font-size:1rem}
+  .search-container{order:3;flex-basis:100%;max-width:none}
+  .app-container{grid-template-columns:1fr;padding:20px 15px 110px}
+  .sidebar{position:static}
+  .category-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .logo-badge{display:none}
+  .nav-actions{margin-left:auto}
+  .tools-grid{grid-template-columns:1fr}
+  .content-top{align-items:flex-start;flex-direction:column}
+  .sort-select{width:100%}
+  .ai-modal{right:10px;bottom:88px;width:calc(100vw - 20px);height:min(510px,calc(100vh - 105px))}
+  .ai-float-btn{right:14px;bottom:14px}
+  .category-list{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
+
 <body>
+<div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-    <div id="toastContainer"></div>
+<header>
+  <div class="logo-area"><span aria-hidden="true">⚡</span> Nexus Hub <span class="logo-badge">PRO v3.0</span></div>
 
-    <header>
-        <div class="logo-area">
-            <span>⚡</span> Nexus Hub <span class="logo-badge">PRO v2.5</span>
-        </div>
+  <div class="search-container">
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input id="searchInput" class="search-bar" type="search"
+      placeholder="Search tools, docs, calculators..." aria-label="Search resources"
+      autocomplete="off">
+    <button id="clearSearch" class="clear-search" type="button" aria-label="Clear search">✕</button>
+  </div>
 
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-bar" placeholder="Search 500+ tools, frameworks, and cheat sheets...">
-        </div>
+  <div class="nav-actions">
+    <button id="themeBtn" class="btn-icon" type="button" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+    <button id="exportBtn" class="btn-icon" type="button" title="Export favorites" aria-label="Export favorites">📥</button>
+  </div>
+</header>
 
-        <div class="nav-actions">
-            <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌗</button>
-            <button class="btn-icon" onclick="exportFavorites()" title="Export Saved Tools">📥</button>
-        </div>
-    </header>
+<div class="app-container">
+  <aside class="sidebar" aria-label="Resource categories">
+    <div class="sidebar-title">Categories</div>
+    <div class="category-list" id="categoryList"></div>
+  </aside>
 
-    <div class="app-container">
-        <aside class="sidebar">
-            <div class="sidebar-title">Categories</div>
-            <div class="category-list" id="categoryList">
-                <button class="cat-btn active" onclick="filterCategory('All', this)">🌟 All Resources</button>
-                <button class="cat-btn" onclick="filterCategory('Favorites', this)">⭐ Favorites</button>
-                <button class="cat-btn" onclick="filterCategory('Programming', this)">💻 Programming</button>
-                <button class="cat-btn" onclick="filterCategory('Math', this)">📐 Mathematics</button>
-                <button class="cat-btn" onclick="filterCategory('Productivity', this)">⏱️ Productivity</button>
-                <button class="cat-btn" onclick="filterCategory('Physics', this)">⚛️ Science & Physics</button>
-                <button class="cat-btn" onclick="filterCategory('AI Tools', this)">🤖 AI Utilities</button>
-            </div>
-        </aside>
-
-        <main class="content-area">
-            <div class="tools-grid" id="toolsGrid"></div>
-            <div class="pagination">
-                <button class="page-btn" id="prevBtn" onclick="changePage(-1)">Previous</button>
-                <span id="pageIndicator" style="color: var(--meta); font-weight: 600;">Page 1</span>
-                <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next</button>
-            </div>
-        </main>
+  <main class="content-area">
+    <div class="content-top">
+      <div class="resource-count"><strong id="resourceCount">0</strong> resources found</div>
+      <label>
+        <span class="hidden">Sort resources</span>
+        <select id="sortSelect" class="sort-select" aria-label="Sort resources">
+          <option value="relevance">Best match</option>
+          <option value="az">Name A–Z</option>
+          <option value="za">Name Z–A</option>
+          <option value="category">Category</option>
+        </select>
+      </label>
     </div>
 
-    <!-- AI ASSISTANT -->
-    <button class="ai-float-btn" onclick="toggleAIModal()" title="Open Gemini Assistant">🤖</button>
+    <div class="tools-grid" id="toolsGrid" aria-live="polite"></div>
 
-    <div class="ai-modal" id="aiModal">
-        <div class="ai-header">
-            <strong>Gemini AI Study Companion</strong>
-            <button onclick="toggleAIModal()" style="background:none; border:none; color:var(--meta); cursor:pointer;">✕</button>
+    <nav class="pagination" aria-label="Pagination">
+      <button class="page-btn" id="prevBtn" type="button">Previous</button>
+      <span id="pageIndicator">Page 1 of 1</span>
+      <button class="page-btn" id="nextBtn" type="button">Next</button>
+    </nav>
+  </main>
+</div>
+
+<button id="aiFloatBtn" class="ai-float-btn" type="button" title="Open AI Assistant" aria-label="Open AI Assistant" aria-controls="aiModal" aria-expanded="false">🤖</button>
+
+<section class="ai-modal" id="aiModal" role="dialog" aria-modal="false" aria-labelledby="aiTitle" aria-hidden="true">
+  <div class="ai-header">
+    <strong id="aiTitle">AI Study Companion</strong>
+    <button id="aiClose" class="ai-close" type="button" aria-label="Close AI Assistant">✕</button>
+  </div>
+  <div class="ai-body" id="aiChatLog">
+    <div class="msg assistant">Hello! I'm your Nexus study assistant. Ask me about a resource, concept, or study topic.</div>
+    <div class="typing-indicator" id="typingIndicator">Assistant is typing…</div>
+  </div>
+  <form class="ai-footer" id="aiForm">
+    <input id="aiInput" class="ai-input" type="text" placeholder="Ask a question…" autocomplete="off" aria-label="AI Chat Input">
+    <button class="btn-small btn-primary-sm send-btn" id="sendBtn" type="submit">Send</button>
+  </form>
+</section>
+
+<script>
+"use strict";
+
+/* =========================
+   RESOURCE DATABASE
+========================= */
+const allTools = [
+ {id:1,title:"Python 3 Documentation",category:"Programming",desc:"Official Python language documentation and standard library reference.",url:"https://docs.python.org/3/",domain:"docs.python.org",type:"Documentation",verified:true},
+ {id:2,title:"MDN Web Docs",category:"Programming",desc:"Reference and learning resources for HTML, CSS, JavaScript and Web APIs.",url:"https://developer.mozilla.org/",domain:"developer.mozilla.org",type:"Documentation",verified:true},
+ {id:3,title:"GitHub",category:"Programming",desc:"Explore repositories, open-source projects and developer collaboration.",url:"https://github.com/",domain:"github.com",type:"Developer Platform",verified:true},
+ {id:4,title:"React Documentation",category:"Programming",desc:"Official React documentation for building user interfaces.",url:"https://react.dev/",domain:"react.dev",type:"Documentation",verified:true},
+ {id:5,title:"Node.js Documentation",category:"Programming",desc:"Official Node.js runtime documentation and API reference.",url:"https://nodejs.org/docs/latest/api/",domain:"nodejs.org",type:"Documentation",verified:true},
+ {id:6,title:"TypeScript Documentation",category:"Programming",desc:"Official TypeScript handbook, language reference and tooling docs.",url:"https://www.typescriptlang.org/docs/",domain:"typescriptlang.org",type:"Documentation",verified:true},
+ {id:7,title:"Java Documentation",category:"Programming",desc:"Official Java documentation, tutorials and API reference.",url:"https://docs.oracle.com/en/java/",domain:"oracle.com",type:"Documentation",verified:true},
+ {id:8,title:"C++ Reference",category:"Programming",desc:"Comprehensive C++ language and library reference.",url:"https://en.cppreference.com/",domain:"en.cppreference.com",type:"Reference",verified:true},
+ {id:9,title:"Rust Documentation",category:"Programming",desc:"Official Rust language documentation and standard library reference.",url:"https://doc.rust-lang.org/",domain:"rust-lang.org",type:"Documentation",verified:true},
+ {id:10,title:"Stack Overflow",category:"Programming",desc:"Programming questions, answers and developer discussions.",url:"https://stackoverflow.com/",domain:"stackoverflow.com",type:"Community",verified:true},
+ {id:11,title:"Wolfram|Alpha",category:"Math",desc:"Compute equations, integrals, derivatives, graphs and more.",url:"https://www.wolframalpha.com/",domain:"wolframalpha.com",type:"Calculator",verified:true},
+ {id:12,title:"GeoGebra",category:"Math",desc:"Interactive graphing, geometry, algebra and 3D mathematics.",url:"https://www.geogebra.org/",domain:"geogebra.org",type:"Calculator",verified:true},
+ {id:13,title:"Desmos",category:"Math",desc:"Online graphing calculator for functions, equations and data.",url:"https://www.desmos.com/calculator",domain:"desmos.com",type:"Graphing Calculator",verified:true},
+ {id:14,title:"Symbolab",category:"Math",desc:"Online math solver covering algebra, calculus and other topics.",url:"https://www.symbolab.com/",domain:"symbolab.com",type:"Math Solver",verified:true},
+ {id:15,title:"Mathway",category:"Math",desc:"Online calculator and problem solver for many areas of mathematics.",url:"https://www.mathway.com/",domain:"mathway.com",type:"Math Solver",verified:true},
+ {id:16,title:"Notion",category:"Productivity",desc:"Workspace for notes, documents, tasks and project organization.",url:"https://www.notion.so/",domain:"notion.so",type:"Workspace",verified:true},
+ {id:17,title:"Google Docs",category:"Productivity",desc:"Create and collaborate on documents online.",url:"https://docs.google.com/",domain:"docs.google.com",type:"Documents",verified:true},
+ {id:18,title:"Trello",category:"Productivity",desc:"Visual boards for organizing tasks and projects.",url:"https://trello.com/",domain:"trello.com",type:"Task Management",verified:true},
+ {id:19,title:"Todoist",category:"Productivity",desc:"Task manager for organizing projects, tasks and routines.",url:"https://todoist.com/",domain:"todoist.com",type:"Task Manager",verified:true},
+ {id:20,title:"HyperPhysics",category:"Physics",desc:"Concept-focused physics reference covering mechanics, electricity and more.",url:"http://hyperphysics.phy-astr.gsu.edu/",domain:"phy-astr.gsu.edu",type:"Reference",verified:true},
+ {id:21,title:"PhET Interactive Simulations",category:"Physics",desc:"Interactive science and physics simulations for learning.",url:"https://phet.colorado.edu/",domain:"phet.colorado.edu",type:"Simulation",verified:true},
+ {id:22,title:"NASA",category:"Physics",desc:"Official NASA science, space and educational resources.",url:"https://www.nasa.gov/",domain:"nasa.gov",type:"Science",verified:true},
+ {id:23,title:"Khan Academy Science",category:"Physics",desc:"Free lessons and practice covering physics and science.",url:"https://www.khanacademy.org/science",domain:"khanacademy.org",type:"Learning",verified:true},
+ {id:24,title:"Hugging Face",category:"AI Tools",desc:"Explore machine-learning models, datasets and AI applications.",url:"https://huggingface.co/",domain:"huggingface.co",type:"AI Platform",verified:true},
+ {id:25,title:"Google AI",category:"AI Tools",desc:"Google's AI research, tools and developer resources.",url:"https://ai.google/",domain:"ai.google",type:"AI Resources",verified:true},
+ {id:26,title:"Khan Academy",category:"AI Tools",desc:"Free educational lessons, exercises and learning resources.",url:"https://www.khanacademy.org/",domain:"khanacademy.org",type:"Learning",verified:true},
+ {id:27,title:"Google Scholar",category:"Research",desc:"Search scholarly literature, papers, theses and academic publications.",url:"https://scholar.google.com/",domain:"scholar.google.com",type:"Research",verified:true},
+ {id:28,title:"arXiv",category:"Research",desc:"Open-access repository for research papers in science and computing.",url:"https://arxiv.org/",domain:"arxiv.org",type:"Research",verified:true},
+ {id:29,title:"PubMed",category:"Research",desc:"Search biomedical literature and research publications.",url:"https://pubmed.ncbi.nlm.nih.gov/",domain:"pubmed.ncbi.nlm.nih.gov",type:"Research",verified:true},
+ {id:30,title:"MIT OpenCourseWare",category:"Research",desc:"Free course materials from MIT.",url:"https://ocw.mit.edu/",domain:"ocw.mit.edu",type:"Learning",verified:true}
+];
+
+/* =========================
+   STATE
+========================= */
+const STORAGE_KEYS = {
+  favorites:"nexus_favs_v3",
+  theme:"nexus_theme_v3"
+};
+let currentCategory = "All";
+let searchQuery = "";
+let currentPage = 1;
+const itemsPerPage = 12;
+let favorites = loadFavorites();
+let searchTimer = null;
+
+/* =========================
+   HELPERS
+========================= */
+function loadFavorites(){
+  try{
+    const value = JSON.parse(localStorage.getItem(STORAGE_KEYS.favorites) || "[]");
+    return Array.isArray(value) ? value.filter(Number.isInteger) : [];
+  }catch{
+    return [];
+  }
+}
+
+function saveFavorites(){
+  try{
+    localStorage.setItem(STORAGE_KEYS.favorites,JSON.stringify(favorites));
+  }catch{
+    showToast("Could not save favorites on this device.",true);
+  }
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function safeUrl(url){
+  try{
+    const parsed = new URL(url);
+    return ["https:","http:"].includes(parsed.protocol) ? parsed.href : "#";
+  }catch{
+    return "#";
+  }
+}
+
+function showToast(message,error=false){
+  const toast=document.createElement("div");
+  toast.className="toast"+(error?" error":"");
+  toast.textContent=message;
+  document.getElementById("toastContainer").appendChild(toast);
+  setTimeout(()=>toast.remove(),3200);
+}
+
+/* =========================
+   CATEGORIES
+========================= */
+function categoryCounts(){
+  const counts={All:allTools.length,Favorites:favorites.length};
+  allTools.forEach(t=>counts[t.category]=(counts[t.category]||0)+1);
+  return counts;
+}
+
+function renderCategories(){
+  const counts=categoryCounts();
+  const categories=[
+    ["All","🌟 All Resources"],
+    ["Favorites","⭐ Favorites"],
+    ["Programming","💻 Programming"],
+    ["Math","📐 Mathematics"],
+    ["Productivity","⏱️ Productivity"],
+    ["Physics","⚛️ Science & Physics"],
+    ["AI Tools","🤖 AI Utilities"],
+    ["Research","📚 Research"]
+  ];
+  const list=document.getElementById("categoryList");
+  list.replaceChildren();
+
+  categories.forEach(([key,label])=>{
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.className="cat-btn"+(currentCategory===key?" active":"");
+    btn.setAttribute("aria-pressed",currentCategory===key?"true":"false");
+    btn.innerHTML=`<span>${escapeHtml(label)}</span><span class="count-pill">${counts[key]||0}</span>`;
+    btn.addEventListener("click",()=>{
+      currentCategory=key;
+      currentPage=1;
+      renderCategories();
+      renderGrid();
+    });
+    list.appendChild(btn);
+  });
+}
+
+/* =========================
+   SEARCH / SORT / RENDER
+========================= */
+function getFilteredTools(){
+  let filtered=allTools.filter(tool=>{
+    const categoryMatch =
+      currentCategory==="All" ? true :
+      currentCategory==="Favorites" ? favorites.includes(tool.id) :
+      tool.category===currentCategory;
+
+    const haystack=(tool.title+" "+tool.desc+" "+tool.category+" "+tool.type+" "+tool.domain).toLowerCase();
+    return categoryMatch && (!searchQuery || haystack.includes(searchQuery));
+  });
+
+  const sort=document.getElementById("sortSelect").value;
+  if(sort==="az") filtered.sort((a,b)=>a.title.localeCompare(b.title));
+  if(sort==="za") filtered.sort((a,b)=>b.title.localeCompare(a.title));
+  if(sort==="category") filtered.sort((a,b)=>a.category.localeCompare(b.category)||a.title.localeCompare(b.title));
+  return filtered;
+}
+
+function renderGrid(){
+  const grid=document.getElementById("toolsGrid");
+  const filtered=getFilteredTools();
+  const totalPages=Math.max(1,Math.ceil(filtered.length/itemsPerPage));
+  if(currentPage>totalPages) currentPage=totalPages;
+
+  const start=(currentPage-1)*itemsPerPage;
+  const pageItems=filtered.slice(start,start+itemsPerPage);
+  grid.replaceChildren();
+
+  document.getElementById("resourceCount").textContent=filtered.length;
+  document.getElementById("pageIndicator").textContent=`Page ${currentPage} of ${totalPages}`;
+  document.getElementById("prevBtn").disabled=currentPage===1;
+  document.getElementById("nextBtn").disabled=currentPage>=totalPages;
+  document.getElementById("clearSearch").style.display=searchQuery?"block":"none";
+
+  if(!pageItems.length){
+    const empty=document.createElement("div");
+    empty.className="empty-state";
+    empty.innerHTML="<strong>No matching resources</strong><span>Try another search or choose a different category.</span>";
+    grid.appendChild(empty);
+    return;
+  }
+
+  const fragment=document.createDocumentFragment();
+
+  pageItems.forEach(tool=>{
+    const card=document.createElement("article");
+    card.className="tool-card";
+    const isFav=favorites.includes(tool.id);
+
+    card.innerHTML=`
+      <div>
+        <div class="card-header">
+          <span class="badge">${escapeHtml(tool.category)}</span>
+          <button class="fav-btn ${isFav?"active":""}" type="button"
+            aria-label="${isFav?"Remove":"Add"} ${escapeHtml(tool.title)} ${isFav?"from":"to"} favorites"
+            aria-pressed="${isFav}">
+            ${isFav?"★":"☆"}
+          </button>
         </div>
-        <div class="ai-body" id="aiChatLog">
-            <div class="msg assistant">Hello! I'm your Nexus study assistant. How can I assist your learning today?</div>
+        <div class="tool-title">${escapeHtml(tool.title)}</div>
+        <div class="tool-desc">${escapeHtml(tool.desc)}</div>
+        <div class="tool-meta">
+          <span class="badge">${escapeHtml(tool.type||tool.category)}</span>
+          ${tool.verified?'<span class="badge" style="color:var(--success);background:rgba(16,185,129,.12)">✓ Verified</span>':""}
+          <span class="domain" title="${escapeHtml(tool.domain||"")}">${escapeHtml(tool.domain||"")}</span>
         </div>
-        <div class="ai-footer">
-            <input type="text" id="aiInput" class="ai-input" placeholder="Ask a question..." onkeypress="handleAIPress(event)">
-            <button class="btn-small btn-primary-sm" onclick="sendAIPrompt()">Send</button>
-        </div>
-    </div>
+      </div>
+      <div class="action-btns">
+        <a class="btn-small btn-primary-sm" href="${escapeHtml(safeUrl(tool.url))}" target="_blank" rel="noopener noreferrer">Open Utility ↗</a>
+      </div>`;
 
-    <script>
-        // RESOURCE DATABASE GENERATION
-        const baseTools = [
-            { id: 1, title: "Python 3 Core Docs", category: "Programming", desc: "Official reference manual for Python standard library & syntax.", url: "https://docs.python.org/3/" },
-            { id: 2, title: "Wolfram|Alpha Engine", category: "Math", desc: "Compute step-by-step integrals, equations, and mathematical graphs.", url: "https://www.wolframalpha.com/" },
-            { id: 3, title: "GitHub Repositories", category: "Programming", desc: "Open-source development platform for code hosting and collaboration.", url: "https://github.com" },
-            { id: 4, title: "Notion Workspace", category: "Productivity", desc: "All-in-one note taking, task management, and document organization.", url: "https://notion.so" },
-            { id: 5, title: "GeoGebra 3D Calculator", category: "Math", desc: "Interactive geometry, algebra, and 3D mathematical graphing.", url: "https://www.geogebra.org/" }
-        ];
+    card.querySelector(".fav-btn").addEventListener("click",()=>toggleFav(tool.id));
+    fragment.appendChild(card);
+  });
 
-        const categoriesList = ["Programming", "Math", "Productivity", "Physics", "AI Tools"];
-        let allTools = [...baseTools];
-        
-        for(let i = 6; i <= 500; i++) {
-            let cat = categoriesList[i % categoriesList.length];
-            allTools.push({
-                id: i,
-                title: `${cat} Resource Node #${i}`,
-                category: cat,
-                desc: `Verified academic documentation and computational utility for advanced study in ${cat}.`,
-                url: `https://github.com`
-            });
-        }
+  grid.appendChild(fragment);
+}
 
-        // STATE MANAGEMENT
-        let currentCategory = 'All';
-        let searchQuery = '';
-        let currentPage = 1;
-        const itemsPerPage = 24;
-        let favorites = JSON.parse(localStorage.getItem('nexus_favs') || '[]');
+function toggleFav(id){
+  if(favorites.includes(id)){
+    favorites=favorites.filter(x=>x!==id);
+    showToast("Removed from favorites");
+  }else{
+    favorites.push(id);
+    showToast("Added to favorites ⭐");
+  }
+  saveFavorites();
+  renderCategories();
+  renderGrid();
+}
 
-        // INITIALIZATION
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGrid();
-            setupSearchDebounce();
-        });
+function changePage(delta){
+  const total=Math.max(1,Math.ceil(getFilteredTools().length/itemsPerPage));
+  currentPage=Math.min(total,Math.max(1,currentPage+delta));
+  renderGrid();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-        // DEBOUNCED SEARCH
-        function setupSearchDebounce() {
-            let timeout = null;
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    searchQuery = e.target.value.toLowerCase().trim();
-                    currentPage = 1;
-                    renderGrid();
-                }, 250);
-            });
-        }
+/* =========================
+   THEME
+========================= */
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme",theme);
+  try{localStorage.setItem(STORAGE_KEYS.theme,theme)}catch{}
+  const light=theme==="light";
+  document.getElementById("themeBtn").textContent=light?"🌙":"☀️";
+  document.getElementById("themeBtn").title=light?"Switch to dark mode":"Switch to light mode";
+}
 
-        // GRID RENDERER WITH SANITIZATION
-        function renderGrid() {
-            const grid = document.getElementById('toolsGrid');
-            grid.innerHTML = '';
+function initTheme(){
+  let saved=null;
+  try{saved=localStorage.getItem(STORAGE_KEYS.theme)}catch{}
+  const systemLight=window.matchMedia?.("(prefers-color-scheme: light)").matches;
+  applyTheme(saved==="light"||saved==="dark"?saved:(systemLight?"light":"dark"));
+}
 
-            let filtered = allTools.filter(item => {
-                let matchCat = currentCategory === 'All' ? true : 
-                              currentCategory === 'Favorites' ? favorites.includes(item.id) : 
-                              item.category === currentCategory;
-                let matchQuery = !searchQuery || 
-                                 item.title.toLowerCase().includes(searchQuery) || 
-                                 item.desc.toLowerCase().includes(searchQuery);
-                return matchCat && matchQuery;
-            });
+/* =========================
+   EXPORT
+========================= */
+function exportFavorites(){
+  const favItems=allTools.filter(t=>favorites.includes(t.id));
+  if(!favItems.length){showToast("No favorites to export.",true);return}
 
-            // Pagination calculations
-            let totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-            let start = (currentPage - 1) * itemsPerPage;
-            let paginatedItems = filtered.slice(start, start + itemsPerPage);
+  const blob=new Blob([JSON.stringify(favItems,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const anchor=document.createElement("a");
+  anchor.href=url;
+  anchor.download="nexus-favorites.json";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  showToast("Favorites exported successfully");
+}
 
-            if (paginatedItems.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--meta); padding: 40px;">No matching resources found.</div>`;
-            } else {
-                paginatedItems.forEach(tool => {
-                    let isFav = favorites.includes(tool.id);
-                    grid.innerHTML += `
-                        <div class="tool-card">
-                            <div>
-                                <div class="card-header">
-                                    <span class="badge">${escapeHtml(tool.category)}</span>
-                                    <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(${tool.id})">★</button>
-                                </div>
-                                <div class="tool-title">${escapeHtml(tool.title)}</div>
-                                <div class="tool-desc">${escapeHtml(tool.desc)}</div>
-                            </div>
-                            <div class="action-btns">
-                                <a href="${tool.url}" target="_blank" rel="noopener" class="btn-small btn-primary-sm">Open Utility</a>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
+/* =========================
+   AI UI
+   Replace requestAI() with your real backend later.
+========================= */
+const AI_ENDPOINT = ""; 
+// Example when backend exists:
+// const AI_ENDPOINT = "/api/chat";
 
-            // Update Pagination UI
-            document.getElementById('pageIndicator').innerText = `Page ${currentPage} of ${totalPages}`;
-            document.getElementById('prevBtn').disabled = currentPage === 1;
-            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
-        }
+function setAIOpen(open){
+  const modal=document.getElementById("aiModal");
+  modal.classList.toggle("active",open);
+  modal.setAttribute("aria-hidden",String(!open));
+  document.getElementById("aiFloatBtn").setAttribute("aria-expanded",String(open));
+  if(open) setTimeout(()=>document.getElementById("aiInput").focus(),50);
+}
 
-        function changePage(delta) {
-            currentPage += delta;
-            renderGrid();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+function appendMessage(text,type){
+  const msg=document.createElement("div");
+  msg.className=`msg ${type}`;
+  msg.textContent=text;
+  const indicator=document.getElementById("typingIndicator");
+  document.getElementById("aiChatLog").insertBefore(msg,indicator);
+  document.getElementById("aiChatLog").scrollTop=document.getElementById("aiChatLog").scrollHeight;
+}
 
-        function filterCategory(cat, btn) {
-            currentCategory = cat;
-            currentPage = 1;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderGrid();
-        }
+async function requestAI(text){
+  if(!AI_ENDPOINT){
+    await new Promise(resolve=>setTimeout(resolve,500));
+    return "The AI interface is ready. Add your secure backend endpoint in AI_ENDPOINT to enable live answers.";
+  }
 
-        // FAVORITES SYSTEM
-        function toggleFav(id) {
-            if (favorites.includes(id)) {
-                favorites = favorites.filter(favId => favId !== id);
-                showToast("Removed from Favorites");
-            } else {
-                favorites.push(id);
-                showToast("Added to Favorites ⭐");
-            }
-            localStorage.setItem('nexus_favs', JSON.stringify(favorites));
-            renderGrid();
-        }
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),20000);
 
-        function exportFavorites() {
-            let favItems = allTools.filter(t => favorites.includes(t.id));
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(favItems, null, 2));
-            let anchor = document.createElement('a');
-            anchor.setAttribute("href", dataStr);
-            anchor.setAttribute("download", "nexus_favorites.json");
-            document.body.appendChild(anchor);
-            anchor.click();
-            anchor.remove();
-            showToast("Exported Saved Favorites!");
-        }
+  try{
+    const response=await fetch(AI_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({message:text}),
+      signal:controller.signal
+    });
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();
+    return data.reply || data.message || "The server returned no answer.";
+  }finally{
+    clearTimeout(timeout);
+  }
+}
 
-        // UTILITIES
-        function showToast(msg) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerText = msg;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
+async function sendAIPrompt(){
+  const input=document.getElementById("aiInput");
+  const sendBtn=document.getElementById("sendBtn");
+  const text=input.value.trim();
+  if(!text || sendBtn.disabled)return;
 
-        function toggleTheme() {
-            let isLight = document.body.getAttribute('data-theme') === 'light';
-            document.body.setAttribute('data-theme', isLight ? 'dark' : 'light');
-            showToast(`Switched to ${isLight ? 'Dark' : 'Light'} Mode`);
-        }
+  appendMessage(text,"user");
+  input.value="";
+  sendBtn.disabled=true;
 
-        function escapeHtml(str) {
-            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-        }
+  const indicator=document.getElementById("typingIndicator");
+  indicator.style.display="block";
+  document.getElementById("aiChatLog").scrollTop=document.getElementById("aiChatLog").scrollHeight;
 
-        // AI ASSISTANT INTERACTOR
-        function toggleAIModal() {
-            document.getElementById('aiModal').classList.toggle('active');
-        }
+  try{
+    const answer=await requestAI(text);
+    appendMessage(answer,"assistant");
+  }catch(error){
+    appendMessage(error.name==="AbortError"
+      ?"The request took too long. Please try again."
+      :"I couldn't connect to the AI service. Please try again later.","assistant");
+  }finally{
+    indicator.style.display="none";
+    sendBtn.disabled=false;
+    input.focus();
+  }
+}
 
-        function handleAIPress(e) {
-            if (e.key === 'Enter') sendAIPrompt();
-        }
+/* =========================
+   EVENTS
+========================= */
+document.getElementById("searchInput").addEventListener("input",e=>{
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{
+    searchQuery=e.target.value.toLowerCase().trim();
+    currentPage=1;
+    renderGrid();
+  },180);
+});
 
-        function sendAIPrompt() {
-            let input = document.getElementById('aiInput');
-            let text = input.value.trim();
-            if(!text) return;
+document.getElementById("clearSearch").addEventListener("click",()=>{
+  const input=document.getElementById("searchInput");
+  input.value="";
+  searchQuery="";
+  currentPage=1;
+  renderGrid();
+  input.focus();
+});
 
-            let log = document.getElementById('aiChatLog');
-            log.innerHTML += `<div class="msg user">${escapeHtml(text)}</div>`;
-            input.value = '';
-            
-            // Mock responsive AI feedback
-            setTimeout(() => {
-                log.innerHTML += `<div class="msg assistant">I'm currently running in client demo mode. Connect a secure backend server to execute live queries.</div>`;
-                log.scrollTop = log.scrollHeight;
-                        }, 600);
-            
-            log.scrollTop = log.scrollHeight;
-        }
-    </script>
+document.getElementById("sortSelect").addEventListener("change",()=>{
+  currentPage=1;
+  renderGrid();
+});
+
+document.getElementById("prevBtn").addEventListener("click",()=>changePage(-1));
+document.getElementById("nextBtn").addEventListener("click",()=>changePage(1));
+
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const current=document.documentElement.getAttribute("data-theme");
+  applyTheme(current==="light"?"dark":"light");
+});
+
+document.getElementById("exportBtn").addEventListener("click",exportFavorites);
+
+document.getElementById("aiFloatBtn").addEventListener("click",()=>{
+  const modal=document.getElementById("aiModal");
+  setAIOpen(!modal.classList.contains("active"));
+});
+document.getElementById("aiClose").addEventListener("click",()=>setAIOpen(false));
+document.getElementById("aiForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  sendAIPrompt();
+});
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    const modal=document.getElementById("aiModal");
+    if(modal.classList.contains("active")) setAIOpen(false);
+  }
+});
+
+/* =========================
+   START
+========================= */
+initTheme();
+renderCategories();
+renderGrid();
+</script>
 </body>
 </html>
 
