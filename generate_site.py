@@ -17,7 +17,6 @@ base_tools = [
     ("Overleaf", "Writing", "Collaborative cloud-based LaTeX editor for academic writing and papers.", "https://www.overleaf.com")
 ]
 
-counter = 1
 for i in range(50):
     for name, cat, desc, link in base_tools:
         item_name = f"{name} Pro {i+1}" if i > 0 else name
@@ -40,7 +39,8 @@ for i in range(50):
             "link": link,
             "features": features,
             "rating": round(4.5 + (i % 5) * 0.1, 1),
-            "reviews": 120 + i * 15
+            "reviews": 120 + i * 15,
+            "votes": 10 + (i * 3) % 50
         })
 
 template = """
@@ -115,12 +115,13 @@ for tool in tools_data:
         "name": tool['name'],
         "category": tool['category'],
         "pricing": tool['pricing'],
-        "url": filename
+        "url": filename,
+        "votes": tool['votes'],
+        "description": tool['description']
     })
     
     sitemap_urls.append(f"<url><loc>https://iliasilias030201-design.github.io/student-directory/{filename}</loc><priority>0.8</priority></url>")
 
-# Generate sitemap.xml for Google SEO indexation
 sitemap_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(sitemap_urls) + '\n</urlset>'
 with open("sitemap.xml", "w", encoding="utf-8") as f:
     f.write(sitemap_content)
@@ -148,12 +149,18 @@ index_content = f"""
         .filter-btn.active {{ background: #3b82f6; color: white; }}
         ul {{ list-style-type: none; padding: 0; max-height: 400px; overflow-y: auto; }}
         li {{ margin: 8px 0; background: var(--border); padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }}
-        a {{ color: #38bdf8; text-decoration: none; font-weight: 500; }}
+        a {{ color: #38bdf8; text-decoration: none; font-weight: 500; cursor: pointer; }}
         a:hover {{ text-decoration: underline; }}
-        .meta {{ color: var(--meta); font-size: 0.85rem; }}
+        .meta {{ color: var(--meta); font-size: 0.85rem; display: flex; gap: 10px; align-items: center; }}
+        .vote-btn {{ background: #0f172a; color: #38bdf8; border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }}
+        .vote-btn:hover {{ background: #3b82f6; color: white; }}
         .submit-section {{ margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }}
         .submit-section h3 {{ margin-top: 0; }}
         button.submit-btn {{ background: #22c55e; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }}
+        /* Modal Popup Styles */
+        .modal {{ display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }}
+        .modal-content {{ background: var(--card); padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%; border: 1px solid var(--border); position: relative; }}
+        .close-modal {{ position: absolute; right: 15px; top: 15px; font-size: 1.2rem; cursor: pointer; color: var(--meta); }}
     </style>
 </head>
 <body>
@@ -193,8 +200,21 @@ index_content = f"""
         </div>
     </div>
 
+    <!-- Modal View for Dynamic Submissions -->
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <span id="modalCat" style="background:#3b82f6; color:white; padding:3px 8px; border-radius:4px; font-size:0.8rem;"></span>
+            <p id="modalDesc" style="margin-top: 1rem; color: var(--text);"></p>
+            <p style="color: var(--meta); font-size: 0.85rem;" id="modalVotes"></p>
+        </div>
+    </div>
+
     <script>
-        const tools = {index_json};
+        let baseTools = {index_json};
+        let userTools = JSON.parse(localStorage.getItem('student_user_tools') || '[]');
+        let tools = [...userTools, ...baseTools];
         let currentCategory = 'All';
 
         function toggleTheme() {{
@@ -238,12 +258,47 @@ index_content = f"""
             return costs[s2.length];
         }}
 
+        function upvote(index, event) {{
+            event.stopPropagation();
+            tools[index].votes = (tools[index].votes || 10) + 1;
+            // Update storage if user tool
+            let uIndex = userTools.findIndex(t => t.name === tools[index].name);
+            if (uIndex !== -1) {{
+                userTools[uIndex].votes = tools[index].votes;
+                localStorage.setItem('student_user_tools', JSON.stringify(userTools));
+            }}
+            filterTools();
+        }}
+
+        function openModal(name, cat, desc, votes) {{
+            document.getElementById("modalTitle").innerText = name;
+            document.getElementById("modalCat").innerText = cat;
+            document.getElementById("modalDesc").innerText = desc || "Custom user-submitted student workflow utility.";
+            document.getElementById("modalVotes").innerText = "Upvotes: " + (votes || 10);
+            document.getElementById("toolModal").style.display = "flex";
+        }}
+
+        function closeModal() {{
+            document.getElementById("toolModal").style.display = "none";
+        }}
+
         function displayTools(data) {{
             const listEl = document.getElementById("toolList");
             listEl.innerHTML = "";
             data.slice(0, 50).forEach(tool => {{
+                let originalIndex = tools.findIndex(t => t.name === tool.name);
                 let li = document.createElement("li");
-                li.innerHTML = `<a href="${{tool.url}}" target="_blank">${{tool.name}}</a> <span class="meta">${{tool.category}} | ${{tool.pricing}}</span>`;
+                
+                let linkHtml = tool.url !== "#" ? 
+                    `<a href="${{tool.url}}" target="_blank">${{tool.name}}</a>` : 
+                    `<a onclick="openModal('${{tool.name}}', '${{tool.category}}', '${{tool.description}}', ${{tool.votes}})">${{tool.name}}</a>`;
+
+                li.innerHTML = `
+                    ${{linkHtml}}
+                    <div class="meta">
+                        <span>${{tool.category}}</span>
+                        <button class="vote-btn" onclick="upvote(${{originalIndex}}, event)">&#9650; ${{tool.votes || 10}}</button>
+                    </div>`;
                 listEl.appendChild(li);
             }});
         }}
@@ -278,19 +333,25 @@ index_content = f"""
             let cat = document.getElementById("newToolCat").value;
             if(name === "") return;
             
-            tools.unshift({{
+            let newObj = {{
                 name: name,
                 category: cat,
                 pricing: "Free",
-                url: "#"
-            }});
+                url: "#",
+                votes: 1,
+                description: "Custom user-submitted student workflow utility."
+            }};
+            
+            userTools.unshift(newObj);
+            tools.unshift(newObj);
+            localStorage.setItem('student_user_tools', JSON.stringify(userTools));
             
             document.getElementById("newToolName").value = "";
-            document.getElementById("submitMsg").innerText = "Success! Tool added to local view.";
+            document.getElementById("submitMsg").innerText = "Success! Saved permanently to browser storage.";
             filterTools();
         }}
 
-        displayTools(tools);
+        filterTools();
     </script>
 </body>
 </html>
@@ -299,4 +360,4 @@ index_content = f"""
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(index_content)
 
-print("Sitemap and Submission Form added successfully!")
+print("All advanced features added successfully!")
