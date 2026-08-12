@@ -1,348 +1,579 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark light">
-<title>Nexus Hub — Academic & Developer Resource Portal</title>
-<meta name="description" content="Discover verified academic utilities, programming documentation, mathematics tools, research resources, productivity apps, and AI utilities.">
-<meta property="og:title" content="Nexus Hub">
-<meta property="og:description" content="A curated hub for students, developers, and researchers.">
-<meta name="theme-color" content="#090d16">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Nexus Hub — a curated portal for academic, developer, research and AI resources.">
+<title>Nexus Hub — Academic & Developer Portal</title>
 <style>
 :root{
-  --bg:#090d16;--card:#131c2e;--card-hover:#1a263e;--border:#2e3b52;
-  --primary:#6366f1;--primary-hover:#4f46e5;--accent:#06b6d4;
-  --text:#f8fafc;--meta:#cbd5e1;--success:#10b981;--danger:#ef4444;
-  --warning:#f59e0b;--radius:14px;--header-h:72px;
+  --bg:#080c16;--surface:#111827;--surface2:#172033;--surface3:#1d2940;
+  --border:#2b3952;--text:#f8fafc;--muted:#b8c4d6;--primary:#6366f1;
+  --primary2:#4f46e5;--accent:#06b6d4;--success:#10b981;--warning:#f59e0b;
+  --danger:#ef4444;--shadow:0 16px 40px rgba(0,0,0,.28);--radius:14px;
 }
 [data-theme="light"]{
-  --bg:#f8fafc;--card:#fff;--card-hover:#f1f5f9;--border:#cbd5e1;
-  --primary:#4f46e5;--primary-hover:#4338ca;--accent:#0284c7;
-  --text:#0f172a;--meta:#475569;
+  --bg:#f4f7fb;--surface:#fff;--surface2:#f1f5f9;--surface3:#e8eef7;
+  --border:#c8d2e1;--text:#0f172a;--muted:#475569;--primary:#4f46e5;
+  --primary2:#4338ca;--accent:#0284c7;--shadow:0 12px 32px rgba(15,23,42,.12)
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--text);min-height:100vh;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  transition:background .25s,color .25s;
-}
-button,input{font:inherit}
-button,a{ -webkit-tap-highlight-color:transparent }
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+button,input,textarea{font:inherit}
+button,a{touch-action:manipulation}
 button{cursor:pointer}
-:focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 55%,transparent);outline-offset:2px}
-
-/* HEADER */
+:focus-visible{outline:3px solid rgba(99,102,241,.38);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 header{
-  min-height:var(--header-h);display:flex;align-items:center;gap:16px;
-  padding:12px 28px;background:color-mix(in srgb,var(--card) 90%,transparent);
-  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;
-  backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:50;display:grid;grid-template-columns:auto minmax(260px,1fr) auto;
+  gap:18px;align-items:center;padding:12px max(18px,calc((100vw - 1440px)/2));
+  background:color-mix(in srgb,var(--surface) 90%,transparent);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(16px)
 }
-.logo-area{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.18rem;white-space:nowrap}
-.logo-badge{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:4px 8px;border-radius:6px;font-size:.7rem}
-.search-container{flex:1;max-width:620px;position:relative;margin:auto}
-.search-bar{
-  width:100%;padding:11px 42px 11px 42px;border-radius:30px;
-  border:1px solid var(--border);background:var(--bg);color:var(--text);
-  outline:0;transition:.2s;
+.logo{display:flex;align-items:center;gap:9px;font-weight:850;font-size:1.18rem;white-space:nowrap}
+.badge-pro{font-size:.68rem;padding:4px 7px;border-radius:7px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white}
+.search-wrap{position:relative}
+.search{width:100%;height:44px;padding:0 44px;border:1px solid var(--border);border-radius:24px;background:var(--bg);color:var(--text)}
+.search::placeholder{color:var(--muted)}
+.search:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.18)}
+.search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.header-actions{display:flex;gap:8px}
+.icon-btn{
+  width:42px;height:42px;border:1px solid var(--border);border-radius:11px;background:var(--bg);color:var(--text)
 }
-.search-bar:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.22)}
-.search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--meta);pointer-events:none}
-.clear-search{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  border:0;background:transparent;color:var(--meta);width:30px;height:30px;border-radius:50%;
-  display:none;
+.icon-btn:hover{border-color:var(--primary);color:var(--primary)}
+.app{max-width:1440px;margin:auto;padding:24px 20px 110px;display:grid;grid-template-columns:240px 1fr;gap:22px}
+.sidebar{position:sticky;top:82px;align-self:start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.sidebar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sidebar-title{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:800}
+.cat-list{display:grid;gap:5px}
+.cat{
+  width:100%;border:0;background:transparent;color:var(--muted);padding:10px 11px;border-radius:9px;text-align:left;
+  display:flex;justify-content:space-between;align-items:center
 }
-.clear-search:hover{background:var(--card-hover);color:var(--text)}
-.nav-actions{display:flex;align-items:center;gap:8px}
-.btn-icon{
-  background:var(--bg);border:1px solid var(--border);color:var(--text);
-  width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
-  transition:.2s;
+.cat:hover{background:var(--surface2);color:var(--text)}
+.cat.active{background:var(--primary);color:white}
+.count{font-size:.72rem;opacity:.75}
+.content-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.result-count{color:var(--muted);font-size:.88rem}
+.controls{display:flex;gap:8px}
+.select{height:38px;padding:0 10px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:16px}
+.card{
+  min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:17px;
+  display:flex;flex-direction:column;min-height:245px;transition:transform .18s,border-color .18s,box-shadow .18s
 }
-.btn-icon:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
-
-/* LAYOUT */
-.app-container{
-  width:min(1480px,100%);margin:auto;padding:25px;display:grid;
-  grid-template-columns:250px minmax(0,1fr);gap:25px;
+.card:hover{transform:translateY(-3px);border-color:var(--primary);box-shadow:var(--shadow)}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:750;padding:4px 8px;border-radius:20px;background:rgba(99,102,241,.14);color:#a5b4fc}
+.fav{border:0;background:transparent;color:var(--muted);font-size:1.2rem;padding:2px}
+.fav.active{color:var(--warning)}
+.title{font-size:1.03rem;font-weight:800;margin:13px 0 7px}
+.desc{color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;margin-bottom:15px}
+.meta .chip{background:var(--surface2);color:var(--muted);font-weight:650}
+.verified{color:var(--success)!important;background:rgba(16,185,129,.11)!important}
+.domain{font-size:.72rem;color:var(--muted);padding:5px 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.open{
+  display:flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none;border-radius:9px;
+  background:var(--primary);color:white;font-weight:750;font-size:.84rem
 }
-.sidebar{
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:18px;height:max-content;position:sticky;top:90px;
+.open:hover{background:var(--primary2)}
+.empty{grid-column:1/-1;text-align:center;padding:55px 20px;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted)}
+.pagination{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:22px}
+.page-btn{min-height:40px;padding:0 14px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text);font-weight:700}
+.page-btn:disabled{opacity:.42;cursor:not-allowed}
+.page-info{color:var(--muted);font-size:.84rem;font-weight:700}
+.toast-wrap{position:fixed;top:78px;right:18px;z-index:100;display:grid;gap:8px;pointer-events:none}
+.toast{max-width:min(360px,calc(100vw - 36px));background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--primary);box-shadow:var(--shadow);padding:11px 14px;border-radius:9px;font-size:.84rem;animation:toastIn .2s ease}
+@keyframes toastIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ai-fab{
+  position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:70;width:56px;height:56px;border:0;border-radius:50%;
+  color:white;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 10px 28px rgba(79,70,229,.35);font-size:1.4rem
 }
-.sidebar-title{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--meta);margin-bottom:12px;font-weight:800}
-.category-list{display:flex;flex-direction:column;gap:5px}
-.cat-btn{
-  width:100%;background:transparent;border:0;color:var(--meta);text-align:left;
-  padding:10px 12px;border-radius:9px;font-size:.92rem;font-weight:600;
-  display:flex;justify-content:space-between;align-items:center;transition:.2s;
+.ai-fab:hover{transform:translateY(-2px)}
+.ai-panel{
+  position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:80;width:min(410px,calc(100vw - 28px));
+  height:min(600px,calc(100dvh - 115px));display:none;flex-direction:column;overflow:hidden;background:var(--surface);
+  border:1px solid var(--border);border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,.38)
 }
-.cat-btn:hover{background:var(--card-hover);color:var(--text)}
-.cat-btn.active{background:var(--primary);color:#fff}
-.count-pill{font-size:.72rem;opacity:.8}
-.content-area{min-width:0}
-.content-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px}
-.resource-count{color:var(--meta);font-size:.9rem}
-.sort-select{
-  background:var(--card);color:var(--text);border:1px solid var(--border);
-  border-radius:8px;padding:8px 10px;
-}
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:17px}
-.tool-card{
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:19px;display:flex;flex-direction:column;justify-content:space-between;
-  min-height:235px;transition:transform .2s,border-color .2s,box-shadow .2s;
-}
-.tool-card:hover{transform:translateY(-3px);border-color:var(--primary);box-shadow:0 12px 25px rgba(0,0,0,.18)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
-.badge{
-  display:inline-flex;align-items:center;font-size:.7rem;background:rgba(99,102,241,.14);
-  color:#a5b4fc;padding:4px 9px;border-radius:20px;font-weight:700;
-}
-.fav-btn{
-  background:transparent;border:0;color:var(--meta);font-size:1.15rem;
-  width:34px;height:34px;border-radius:50%;transition:.2s;
-}
-.fav-btn:hover{background:var(--card-hover);color:var(--warning)}
-.fav-btn.active{color:var(--warning)}
-.tool-title{font-size:1.05rem;font-weight:750;margin-bottom:7px}
-.tool-desc{font-size:.86rem;color:var(--meta);line-height:1.55;margin-bottom:16px}
-.tool-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
-.domain{font-size:.72rem;color:var(--meta);padding:4px 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.action-btns{display:flex;gap:9px}
-.btn-small{
-  flex:1;padding:9px 11px;border-radius:8px;border:1px solid var(--border);
-  background:var(--bg);color:var(--text);font-weight:700;font-size:.82rem;
-  text-align:center;text-decoration:none;transition:.2s;
-}
-.btn-small:hover{border-color:var(--primary);color:var(--primary)}
-.btn-primary-sm{background:var(--primary);border-color:var(--primary);color:#fff}
-.btn-primary-sm:hover{background:var(--primary-hover);color:#fff}
-
-/* PAGINATION */
-.pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:28px}
-.page-btn{
-  padding:8px 14px;border:1px solid var(--border);background:var(--card);
-  color:var(--text);border-radius:8px;font-weight:700;transition:.2s;
-}
-.page-btn:hover:not(:disabled){background:var(--primary);border-color:var(--primary);color:#fff}
-.page-btn:disabled{opacity:.45;cursor:not-allowed}
-#pageIndicator{color:var(--meta);font-weight:700;font-size:.88rem}
-
-/* AI */
-.ai-float-btn{
-  position:fixed;right:22px;bottom:22px;background:linear-gradient(135deg,var(--primary),var(--accent));
-  color:#fff;border:0;width:58px;height:58px;border-radius:50%;
-  box-shadow:0 9px 25px rgba(99,102,241,.38);font-size:1.45rem;z-index:1100;transition:.2s;
-}
-.ai-float-btn:hover{transform:scale(1.06)}
-.ai-modal{
-  position:fixed;right:22px;bottom:92px;width:390px;height:510px;
-  max-width:calc(100vw - 30px);max-height:calc(100vh - 115px);
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  box-shadow:0 20px 50px rgba(0,0,0,.4);display:none;flex-direction:column;
-  z-index:1200;overflow:hidden;
-}
-.ai-modal.active{display:flex;animation:slideUp .22s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
-.ai-header{padding:13px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.ai-close{border:0;background:transparent;color:var(--meta);font-size:1.15rem;width:32px;height:32px;border-radius:7px}
-.ai-close:hover{background:var(--card-hover);color:var(--text)}
-.ai-body{flex:1;padding:14px;overflow:auto;display:flex;flex-direction:column;gap:9px;font-size:.88rem}
-.msg{padding:9px 12px;border-radius:10px;max-width:86%;line-height:1.45;word-break:break-word}
-.msg.user{background:var(--primary);color:#fff;align-self:flex-end}
-.msg.assistant{background:var(--bg);border:1px solid var(--border);align-self:flex-start}
-.typing-indicator{color:var(--meta);font-style:italic;font-size:.76rem;padding:4px 12px;display:none}
-.ai-footer{padding:10px;border-top:1px solid var(--border);background:var(--bg);display:flex;gap:8px}
-.ai-input{flex:1;min-width:0;background:var(--card);border:1px solid var(--border);padding:10px;border-radius:8px;color:var(--text);outline:0}
-.ai-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(99,102,241,.22)}
-.send-btn{flex:0 0 auto}
-
-/* TOAST */
-#toastContainer{position:fixed;top:82px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{
-  background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);
-  color:var(--text);padding:11px 15px;border-radius:8px;font-size:.84rem;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);animation:toastIn .22s ease;
-}
-.toast.error{border-left-color:var(--danger)}
-@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
-
-/* EMPTY */
-.empty-state{
-  grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--meta);
-}
-.empty-state strong{display:block;color:var(--text);font-size:1.1rem;margin-bottom:6px}
-.hidden{display:none!important}
-
+.ai-panel.open{display:flex;animation:panelIn .18s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.ai-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.ai-brand{display:flex;gap:9px;align-items:center}
+.ai-dot{width:10px;height:10px;border-radius:50%;background:var(--success);box-shadow:0 0 0 4px rgba(16,185,129,.12)}
+.ai-sub{display:block;font-size:.68rem;color:var(--muted);font-weight:500;margin-top:2px}
+.ai-head-actions{display:flex;gap:5px}
+.ai-head-btn{border:0;background:transparent;color:var(--muted);padding:7px;border-radius:7px}
+.ai-head-btn:hover{background:var(--surface3);color:var(--text)}
+.chat{flex:1;overflow:auto;padding:15px;display:flex;flex-direction:column;gap:9px;overscroll-behavior:contain}
+.msg{max-width:86%;padding:10px 12px;border-radius:12px;font-size:.84rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{align-self:flex-end;background:var(--primary);color:white;border-bottom-right-radius:4px}
+.msg.assistant{align-self:flex-start;background:var(--surface2);border:1px solid var(--border);border-bottom-left-radius:4px}
+.typing{display:none;align-self:flex-start;color:var(--muted);font-size:.76rem;padding:4px 10px}
+.typing.show{display:block}
+.ai-status{padding:7px 13px;color:var(--muted);font-size:.68rem;text-align:center;border-top:1px solid var(--border);display:none}
+.ai-status.show{display:block}
+.ai-foot{padding:10px;border-top:1px solid var(--border);background:var(--surface2)}
+.ai-form{display:flex;gap:7px;align-items:flex-end}
+.ai-input{flex:1;min-width:0;max-height:120px;resize:none;border:1px solid var(--border);border-radius:10px;padding:10px 11px;background:var(--surface);color:var(--text);line-height:1.35}
+.ai-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.send{height:40px;padding:0 13px;border:0;border-radius:9px;background:var(--primary);color:white;font-weight:750}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.ai-hint{text-align:center;color:var(--muted);font-size:.64rem;margin-top:6px}
 @media(max-width:900px){
-  header{flex-wrap:wrap;padding:11px 15px;gap:10px}
-  .logo-area{font-size:1rem}
-  .search-container{order:3;flex-basis:100%;max-width:none}
-  .app-container{grid-template-columns:1fr;padding:20px 15px 110px}
-  .sidebar{position:static}
-  .category-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  header{grid-template-columns:1fr auto;gap:10px;padding:10px 14px}
+  .logo{font-size:1.03rem}
+  .search-wrap{grid-column:1/-1;grid-row:2}
+  .app{display:block;padding:14px 12px 120px}
+  .sidebar{position:static;margin-bottom:14px;padding:10px}
+  .sidebar-head{margin-bottom:7px}
+  .cat-list{display:flex;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .cat-list::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 auto;width:auto;white-space:nowrap;padding:8px 10px}
+  .content-head{align-items:flex-start;flex-wrap:wrap}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .card{padding:14px;min-height:225px}
+  .title{font-size:.96rem}
+  .desc{font-size:.8rem}
+  .ai-fab{right:14px}
+  .ai-panel{right:10px;bottom:calc(80px + env(safe-area-inset-bottom));width:calc(100vw - 20px);height:min(570px,calc(100dvh - 98px))}
 }
 @media(max-width:560px){
-  .logo-badge{display:none}
-  .nav-actions{margin-left:auto}
-  .tools-grid{grid-template-columns:1fr}
-  .content-top{align-items:flex-start;flex-direction:column}
-  .sort-select{width:100%}
-  .ai-modal{right:10px;bottom:88px;width:calc(100vw - 20px);height:min(510px,calc(100vh - 105px))}
-  .ai-float-btn{right:14px;bottom:14px}
-  .category-list{grid-template-columns:1fr}
+  .header-actions{gap:5px}
+  .icon-btn{width:39px;height:39px}
+  .badge-pro{display:none}
+  .grid{grid-template-columns:1fr}
+  .card{min-height:0}
+  .desc{margin-bottom:10px}
+  .content-head{margin-bottom:10px}
+  .controls{width:100%}
+  .select{width:100%}
+  .ai-fab{bottom:calc(14px + env(safe-area-inset-bottom))}
+  .ai-panel{bottom:calc(78px + env(safe-area-inset-bottom));height:calc(100dvh - 96px);max-height:640px}
 }
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
 </style>
 </head>
-
 <body>
-<div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
 
 <header>
-  <div class="logo-area"><span aria-hidden="true">⚡</span> Nexus Hub <span class="logo-badge">PRO v3.0</span></div>
-
-  <div class="search-container">
-    <span class="search-icon" aria-hidden="true">🔍</span>
-    <input id="searchInput" class="search-bar" type="search"
-      placeholder="Search tools, docs, calculators..." aria-label="Search resources"
-      autocomplete="off">
-    <button id="clearSearch" class="clear-search" type="button" aria-label="Clear search">✕</button>
+  <div class="logo" aria-label="Nexus Hub">
+    <span aria-hidden="true">⚡</span><span>Nexus Hub</span><span class="badge-pro">PRO v4</span>
   </div>
-
-  <div class="nav-actions">
-    <button id="themeBtn" class="btn-icon" type="button" title="Toggle theme" aria-label="Toggle theme">🌗</button>
-    <button id="exportBtn" class="btn-icon" type="button" title="Export favorites" aria-label="Export favorites">📥</button>
+  <div class="search-wrap">
+    <label class="sr-only" for="searchInput">Search resources</label>
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="searchInput" class="search" type="search" autocomplete="off"
+      placeholder="Search tools, docs, calculators..." aria-label="Search resources">
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle theme" title="Toggle theme">◐</button>
+    <button class="icon-btn" id="exportBtn" type="button" aria-label="Export favorites" title="Export favorites">⇩</button>
   </div>
 </header>
 
-<div class="app-container">
+<div class="app">
   <aside class="sidebar" aria-label="Resource categories">
-    <div class="sidebar-title">Categories</div>
-    <div class="category-list" id="categoryList"></div>
+    <div class="sidebar-head">
+      <span class="sidebar-title">Categories</span>
+    </div>
+    <div class="cat-list" id="categoryList"></div>
   </aside>
 
-  <main class="content-area">
-    <div class="content-top">
-      <div class="resource-count"><strong id="resourceCount">0</strong> resources found</div>
-      <label>
-        <span class="hidden">Sort resources</span>
-        <select id="sortSelect" class="sort-select" aria-label="Sort resources">
+  <main>
+    <div class="content-head">
+      <div class="result-count" id="resultCount" aria-live="polite"></div>
+      <div class="controls">
+        <label class="sr-only" for="sortSelect">Sort resources</label>
+        <select id="sortSelect" class="select" aria-label="Sort resources">
           <option value="relevance">Best match</option>
-          <option value="az">Name A–Z</option>
-          <option value="za">Name Z–A</option>
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
           <option value="category">Category</option>
         </select>
-      </label>
+      </div>
     </div>
-
-    <div class="tools-grid" id="toolsGrid" aria-live="polite"></div>
-
-    <nav class="pagination" aria-label="Pagination">
+    <section class="grid" id="toolsGrid" aria-live="polite"></section>
+    <nav class="pagination" aria-label="Resource pages">
       <button class="page-btn" id="prevBtn" type="button">Previous</button>
-      <span id="pageIndicator">Page 1 of 1</span>
+      <span class="page-info" id="pageInfo">Page 1 of 1</span>
       <button class="page-btn" id="nextBtn" type="button">Next</button>
     </nav>
   </main>
 </div>
 
-<button id="aiFloatBtn" class="ai-float-btn" type="button" title="Open AI Assistant" aria-label="Open AI Assistant" aria-controls="aiModal" aria-expanded="false">🤖</button>
+<button class="ai-fab" id="aiFab" type="button" aria-label="Open AI Study Companion" aria-expanded="false" aria-controls="aiPanel">🤖</button>
 
-<section class="ai-modal" id="aiModal" role="dialog" aria-modal="false" aria-labelledby="aiTitle" aria-hidden="true">
-  <div class="ai-header">
-    <strong id="aiTitle">AI Study Companion</strong>
-    <button id="aiClose" class="ai-close" type="button" aria-label="Close AI Assistant">✕</button>
+<section class="ai-panel" id="aiPanel" role="dialog" aria-modal="false" aria-labelledby="aiTitle" aria-hidden="true">
+  <div class="ai-head">
+    <div class="ai-brand">
+      <span class="ai-dot" aria-hidden="true"></span>
+      <div><strong id="aiTitle">AI Study Companion</strong><span class="ai-sub" id="aiSub">Ready when your backend is connected</span></div>
+    </div>
+    <div class="ai-head-actions">
+      <button class="ai-head-btn" id="clearChat" type="button" aria-label="Clear conversation" title="Clear conversation">⌫</button>
+      <button class="ai-head-btn" id="closeAi" type="button" aria-label="Close AI assistant" title="Close">✕</button>
+    </div>
   </div>
-  <div class="ai-body" id="aiChatLog">
-    <div class="msg assistant">Hello! I'm your Nexus study assistant. Ask me about a resource, concept, or study topic.</div>
-    <div class="typing-indicator" id="typingIndicator">Assistant is typing…</div>
+  <div class="chat" id="chatLog" tabindex="0">
+    <div class="msg assistant">Hi! I'm your Nexus study assistant. Ask me about studying, programming, mathematics, research, or any resource on this hub.</div>
   </div>
-  <form class="ai-footer" id="aiForm">
-    <input id="aiInput" class="ai-input" type="text" placeholder="Ask a question…" autocomplete="off" aria-label="AI Chat Input">
-    <button class="btn-small btn-primary-sm send-btn" id="sendBtn" type="submit">Send</button>
-  </form>
+  <div class="typing" id="typing">Assistant is thinking…</div>
+  <div class="ai-status" id="aiStatus" role="status"></div>
+  <div class="ai-foot">
+    <form class="ai-form" id="aiForm">
+      <label class="sr-only" for="aiInput">Message the AI</label>
+      <textarea id="aiInput" class="ai-input" rows="1" maxlength="4000" placeholder="Ask a question…" aria-label="Message the AI"></textarea>
+      <button class="send" id="sendBtn" type="submit">Send</button>
+    </form>
+    <div class="ai-hint">Enter to send · Shift+Enter for a new line</div>
+  </div>
 </section>
 
 <script>
 "use strict";
 
-/* =========================
-   RESOURCE DATABASE
-========================= */
+/*
+  NEXUS HUB v4
+  Real AI mode:
+    - Set AI_ENDPOINT to your own backend route, e.g. "/api/chat"
+    - The browser sends JSON: { message, history }
+    - The browser NEVER contains an API key.
+  Until configured, the assistant explicitly reports that the backend is unavailable.
+*/
+const AI_ENDPOINT = ""; // Example: "/api/chat"
+
 const allTools = [
- {id:1,title:"Python 3 Documentation",category:"Programming",desc:"Official Python language documentation and standard library reference.",url:"https://docs.python.org/3/",domain:"docs.python.org",type:"Documentation",verified:true},
- {id:2,title:"MDN Web Docs",category:"Programming",desc:"Reference and learning resources for HTML, CSS, JavaScript and Web APIs.",url:"https://developer.mozilla.org/",domain:"developer.mozilla.org",type:"Documentation",verified:true},
- {id:3,title:"GitHub",category:"Programming",desc:"Explore repositories, open-source projects and developer collaboration.",url:"https://github.com/",domain:"github.com",type:"Developer Platform",verified:true},
- {id:4,title:"React Documentation",category:"Programming",desc:"Official React documentation for building user interfaces.",url:"https://react.dev/",domain:"react.dev",type:"Documentation",verified:true},
- {id:5,title:"Node.js Documentation",category:"Programming",desc:"Official Node.js runtime documentation and API reference.",url:"https://nodejs.org/docs/latest/api/",domain:"nodejs.org",type:"Documentation",verified:true},
- {id:6,title:"TypeScript Documentation",category:"Programming",desc:"Official TypeScript handbook, language reference and tooling docs.",url:"https://www.typescriptlang.org/docs/",domain:"typescriptlang.org",type:"Documentation",verified:true},
- {id:7,title:"Java Documentation",category:"Programming",desc:"Official Java documentation, tutorials and API reference.",url:"https://docs.oracle.com/en/java/",domain:"oracle.com",type:"Documentation",verified:true},
- {id:8,title:"C++ Reference",category:"Programming",desc:"Comprehensive C++ language and library reference.",url:"https://en.cppreference.com/",domain:"en.cppreference.com",type:"Reference",verified:true},
- {id:9,title:"Rust Documentation",category:"Programming",desc:"Official Rust language documentation and standard library reference.",url:"https://doc.rust-lang.org/",domain:"rust-lang.org",type:"Documentation",verified:true},
- {id:10,title:"Stack Overflow",category:"Programming",desc:"Programming questions, answers and developer discussions.",url:"https://stackoverflow.com/",domain:"stackoverflow.com",type:"Community",verified:true},
- {id:11,title:"Wolfram|Alpha",category:"Math",desc:"Compute equations, integrals, derivatives, graphs and more.",url:"https://www.wolframalpha.com/",domain:"wolframalpha.com",type:"Calculator",verified:true},
- {id:12,title:"GeoGebra",category:"Math",desc:"Interactive graphing, geometry, algebra and 3D mathematics.",url:"https://www.geogebra.org/",domain:"geogebra.org",type:"Calculator",verified:true},
- {id:13,title:"Desmos",category:"Math",desc:"Online graphing calculator for functions, equations and data.",url:"https://www.desmos.com/calculator",domain:"desmos.com",type:"Graphing Calculator",verified:true},
- {id:14,title:"Symbolab",category:"Math",desc:"Online math solver covering algebra, calculus and other topics.",url:"https://www.symbolab.com/",domain:"symbolab.com",type:"Math Solver",verified:true},
- {id:15,title:"Mathway",category:"Math",desc:"Online calculator and problem solver for many areas of mathematics.",url:"https://www.mathway.com/",domain:"mathway.com",type:"Math Solver",verified:true},
- {id:16,title:"Notion",category:"Productivity",desc:"Workspace for notes, documents, tasks and project organization.",url:"https://www.notion.so/",domain:"notion.so",type:"Workspace",verified:true},
- {id:17,title:"Google Docs",category:"Productivity",desc:"Create and collaborate on documents online.",url:"https://docs.google.com/",domain:"docs.google.com",type:"Documents",verified:true},
- {id:18,title:"Trello",category:"Productivity",desc:"Visual boards for organizing tasks and projects.",url:"https://trello.com/",domain:"trello.com",type:"Task Management",verified:true},
- {id:19,title:"Todoist",category:"Productivity",desc:"Task manager for organizing projects, tasks and routines.",url:"https://todoist.com/",domain:"todoist.com",type:"Task Manager",verified:true},
- {id:20,title:"HyperPhysics",category:"Physics",desc:"Concept-focused physics reference covering mechanics, electricity and more.",url:"http://hyperphysics.phy-astr.gsu.edu/",domain:"phy-astr.gsu.edu",type:"Reference",verified:true},
- {id:21,title:"PhET Interactive Simulations",category:"Physics",desc:"Interactive science and physics simulations for learning.",url:"https://phet.colorado.edu/",domain:"phet.colorado.edu",type:"Simulation",verified:true},
- {id:22,title:"NASA",category:"Physics",desc:"Official NASA science, space and educational resources.",url:"https://www.nasa.gov/",domain:"nasa.gov",type:"Science",verified:true},
- {id:23,title:"Khan Academy Science",category:"Physics",desc:"Free lessons and practice covering physics and science.",url:"https://www.khanacademy.org/science",domain:"khanacademy.org",type:"Learning",verified:true},
- {id:24,title:"Hugging Face",category:"AI Tools",desc:"Explore machine-learning models, datasets and AI applications.",url:"https://huggingface.co/",domain:"huggingface.co",type:"AI Platform",verified:true},
- {id:25,title:"Google AI",category:"AI Tools",desc:"Google's AI research, tools and developer resources.",url:"https://ai.google/",domain:"ai.google",type:"AI Resources",verified:true},
- {id:26,title:"Khan Academy",category:"AI Tools",desc:"Free educational lessons, exercises and learning resources.",url:"https://www.khanacademy.org/",domain:"khanacademy.org",type:"Learning",verified:true},
- {id:27,title:"Google Scholar",category:"Research",desc:"Search scholarly literature, papers, theses and academic publications.",url:"https://scholar.google.com/",domain:"scholar.google.com",type:"Research",verified:true},
- {id:28,title:"arXiv",category:"Research",desc:"Open-access repository for research papers in science and computing.",url:"https://arxiv.org/",domain:"arxiv.org",type:"Research",verified:true},
- {id:29,title:"PubMed",category:"Research",desc:"Search biomedical literature and research publications.",url:"https://pubmed.ncbi.nlm.nih.gov/",domain:"pubmed.ncbi.nlm.nih.gov",type:"Research",verified:true},
- {id:30,title:"MIT OpenCourseWare",category:"Research",desc:"Free course materials from MIT.",url:"https://ocw.mit.edu/",domain:"ocw.mit.edu",type:"Learning",verified:true}
+  {
+    "id": 1,
+    "title": "Python 3 Documentation",
+    "category": "Programming",
+    "desc": "Official Python language documentation and standard library reference.",
+    "url": "https://docs.python.org/3/",
+    "domain": "docs.python.org",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 2,
+    "title": "MDN Web Docs",
+    "category": "Programming",
+    "desc": "Reference and learning resources for HTML, CSS, JavaScript and Web APIs.",
+    "url": "https://developer.mozilla.org/",
+    "domain": "developer.mozilla.org",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 3,
+    "title": "GitHub",
+    "category": "Programming",
+    "desc": "Explore repositories, open-source projects and developer collaboration.",
+    "url": "https://github.com/",
+    "domain": "github.com",
+    "type": "Developer Platform",
+    "verified": true
+  },
+  {
+    "id": 4,
+    "title": "React Documentation",
+    "category": "Programming",
+    "desc": "Official React documentation for building user interfaces.",
+    "url": "https://react.dev/",
+    "domain": "react.dev",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 5,
+    "title": "Node.js Documentation",
+    "category": "Programming",
+    "desc": "Official Node.js runtime documentation and API reference.",
+    "url": "https://nodejs.org/docs/latest/api/",
+    "domain": "nodejs.org",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 6,
+    "title": "TypeScript Documentation",
+    "category": "Programming",
+    "desc": "Official TypeScript handbook, language reference and tooling docs.",
+    "url": "https://www.typescriptlang.org/docs/",
+    "domain": "typescriptlang.org",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 7,
+    "title": "Java Documentation",
+    "category": "Programming",
+    "desc": "Official Java documentation, tutorials and API reference.",
+    "url": "https://docs.oracle.com/en/java/",
+    "domain": "oracle.com",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 8,
+    "title": "C++ Reference",
+    "category": "Programming",
+    "desc": "Comprehensive C++ language and library reference.",
+    "url": "https://en.cppreference.com/",
+    "domain": "en.cppreference.com",
+    "type": "Reference",
+    "verified": true
+  },
+  {
+    "id": 9,
+    "title": "Rust Documentation",
+    "category": "Programming",
+    "desc": "Official Rust language documentation and standard library reference.",
+    "url": "https://doc.rust-lang.org/",
+    "domain": "rust-lang.org",
+    "type": "Documentation",
+    "verified": true
+  },
+  {
+    "id": 10,
+    "title": "Stack Overflow",
+    "category": "Programming",
+    "desc": "Programming questions, answers and developer discussions.",
+    "url": "https://stackoverflow.com/",
+    "domain": "stackoverflow.com",
+    "type": "Community",
+    "verified": true
+  },
+  {
+    "id": 11,
+    "title": "Wolfram|Alpha",
+    "category": "Math",
+    "desc": "Compute equations, integrals, derivatives, graphs and more.",
+    "url": "https://www.wolframalpha.com/",
+    "domain": "wolframalpha.com",
+    "type": "Calculator",
+    "verified": true
+  },
+  {
+    "id": 12,
+    "title": "GeoGebra",
+    "category": "Math",
+    "desc": "Interactive graphing, geometry, algebra and 3D mathematics.",
+    "url": "https://www.geogebra.org/",
+    "domain": "geogebra.org",
+    "type": "Calculator",
+    "verified": true
+  },
+  {
+    "id": 13,
+    "title": "Desmos",
+    "category": "Math",
+    "desc": "Online graphing calculator for functions, equations and data.",
+    "url": "https://www.desmos.com/calculator",
+    "domain": "desmos.com",
+    "type": "Graphing Calculator",
+    "verified": true
+  },
+  {
+    "id": 14,
+    "title": "Symbolab",
+    "category": "Math",
+    "desc": "Online math solver covering algebra, calculus and other topics.",
+    "url": "https://www.symbolab.com/",
+    "domain": "symbolab.com",
+    "type": "Math Solver",
+    "verified": true
+  },
+  {
+    "id": 15,
+    "title": "Mathway",
+    "category": "Math",
+    "desc": "Online calculator and problem solver for many areas of mathematics.",
+    "url": "https://www.mathway.com/",
+    "domain": "mathway.com",
+    "type": "Math Solver",
+    "verified": true
+  },
+  {
+    "id": 16,
+    "title": "Notion",
+    "category": "Productivity",
+    "desc": "Workspace for notes, documents, tasks and project organization.",
+    "url": "https://www.notion.so/",
+    "domain": "notion.so",
+    "type": "Workspace",
+    "verified": true
+  },
+  {
+    "id": 17,
+    "title": "Google Docs",
+    "category": "Productivity",
+    "desc": "Create and collaborate on documents online.",
+    "url": "https://docs.google.com/",
+    "domain": "docs.google.com",
+    "type": "Documents",
+    "verified": true
+  },
+  {
+    "id": 18,
+    "title": "Trello",
+    "category": "Productivity",
+    "desc": "Visual boards for organizing tasks and projects.",
+    "url": "https://trello.com/",
+    "domain": "trello.com",
+    "type": "Task Management",
+    "verified": true
+  },
+  {
+    "id": 19,
+    "title": "Todoist",
+    "category": "Productivity",
+    "desc": "Task manager for organizing projects, tasks and routines.",
+    "url": "https://todoist.com/",
+    "domain": "todoist.com",
+    "type": "Task Manager",
+    "verified": true
+  },
+  {
+    "id": 20,
+    "title": "HyperPhysics",
+    "category": "Physics",
+    "desc": "Concept-focused physics reference covering mechanics, electricity and more.",
+    "url": "http://hyperphysics.phy-astr.gsu.edu/",
+    "domain": "phy-astr.gsu.edu",
+    "type": "Reference",
+    "verified": true
+  },
+  {
+    "id": 21,
+    "title": "PhET Interactive Simulations",
+    "category": "Physics",
+    "desc": "Interactive science and physics simulations for learning.",
+    "url": "https://phet.colorado.edu/",
+    "domain": "phet.colorado.edu",
+    "type": "Simulation",
+    "verified": true
+  },
+  {
+    "id": 22,
+    "title": "NASA",
+    "category": "Physics",
+    "desc": "Official NASA science, space and educational resources.",
+    "url": "https://www.nasa.gov/",
+    "domain": "nasa.gov",
+    "type": "Science",
+    "verified": true
+  },
+  {
+    "id": 23,
+    "title": "Khan Academy Science",
+    "category": "Physics",
+    "desc": "Free lessons and practice covering physics and science.",
+    "url": "https://www.khanacademy.org/science",
+    "domain": "khanacademy.org",
+    "type": "Learning",
+    "verified": true
+  },
+  {
+    "id": 24,
+    "title": "Hugging Face",
+    "category": "AI Tools",
+    "desc": "Explore machine-learning models, datasets and AI applications.",
+    "url": "https://huggingface.co/",
+    "domain": "huggingface.co",
+    "type": "AI Platform",
+    "verified": true
+  },
+  {
+    "id": 25,
+    "title": "Google AI",
+    "category": "AI Tools",
+    "desc": "Google's AI research, tools and developer resources.",
+    "url": "https://ai.google/",
+    "domain": "ai.google",
+    "type": "AI Resources",
+    "verified": true
+  },
+  {
+    "id": 26,
+    "title": "Khan Academy",
+    "category": "AI Tools",
+    "desc": "Free educational lessons, exercises and learning resources.",
+    "url": "https://www.khanacademy.org/",
+    "domain": "khanacademy.org",
+    "type": "Learning",
+    "verified": true
+  },
+  {
+    "id": 27,
+    "title": "Google Scholar",
+    "category": "Productivity",
+    "desc": "Search scholarly literature, papers, theses and academic publications.",
+    "url": "https://scholar.google.com/",
+    "domain": "scholar.google.com",
+    "type": "Research",
+    "verified": true
+  },
+  {
+    "id": 28,
+    "title": "arXiv",
+    "category": "Productivity",
+    "desc": "Open-access repository for research papers in science and computing.",
+    "url": "https://arxiv.org/",
+    "domain": "arxiv.org",
+    "type": "Research",
+    "verified": true
+  },
+  {
+    "id": 29,
+    "title": "PubMed",
+    "category": "Productivity",
+    "desc": "Search biomedical literature and research publications.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/",
+    "domain": "pubmed.ncbi.nlm.nih.gov",
+    "type": "Research",
+    "verified": true
+  },
+  {
+    "id": 30,
+    "title": "MIT OpenCourseWare",
+    "category": "Productivity",
+    "desc": "Free course materials from MIT.",
+    "url": "https://ocw.mit.edu/",
+    "domain": "ocw.mit.edu",
+    "type": "Learning",
+    "verified": true
+  }
 ];
 
-/* =========================
-   STATE
-========================= */
-const STORAGE_KEYS = {
-  favorites:"nexus_favs_v3",
-  theme:"nexus_theme_v3"
+const state = {
+  category: "All",
+  query: "",
+  page: 1,
+  perPage: 12,
+  sort: "relevance",
+  favorites: loadFavorites(),
+  aiBusy: false,
+  aiAbort: null
 };
-let currentCategory = "All";
-let searchQuery = "";
-let currentPage = 1;
-const itemsPerPage = 12;
-let favorites = loadFavorites();
-let searchTimer = null;
 
-/* =========================
-   HELPERS
-========================= */
+const $ = id => document.getElementById(id);
+
 function loadFavorites(){
   try{
-    const value = JSON.parse(localStorage.getItem(STORAGE_KEYS.favorites) || "[]");
-    return Array.isArray(value) ? value.filter(Number.isInteger) : [];
-  }catch{
-    return [];
-  }
+    const parsed = JSON.parse(localStorage.getItem("nexus_favs_v4") || "[]");
+    return Array.isArray(parsed) ? parsed.filter(Number.isInteger) : [];
+  }catch{ return []; }
 }
-
 function saveFavorites(){
-  try{
-    localStorage.setItem(STORAGE_KEYS.favorites,JSON.stringify(favorites));
-  }catch{
-    showToast("Could not save favorites on this device.",true);
-  }
+  try{ localStorage.setItem("nexus_favs_v4", JSON.stringify(state.favorites)); }catch{}
 }
-
 function escapeHtml(value){
   return String(value)
     .replace(/&/g,"&amp;")
@@ -351,338 +582,264 @@ function escapeHtml(value){
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
 }
-
-function safeUrl(url){
+function safeUrl(value){
   try{
-    const parsed = new URL(url);
-    return ["https:","http:"].includes(parsed.protocol) ? parsed.href : "#";
-  }catch{
-    return "#";
-  }
+    const u = new URL(value);
+    return ["http:","https:"].includes(u.protocol) ? u.href : "#";
+  }catch{ return "#"; }
 }
-
-function showToast(message,error=false){
-  const toast=document.createElement("div");
-  toast.className="toast"+(error?" error":"");
-  toast.textContent=message;
-  document.getElementById("toastContainer").appendChild(toast);
-  setTimeout(()=>toast.remove(),3200);
+function showToast(message){
+  const node = document.createElement("div");
+  node.className = "toast";
+  node.textContent = message;
+  $("toastWrap").appendChild(node);
+  setTimeout(()=>node.remove(), 3000);
 }
-
-/* =========================
-   CATEGORIES
-========================= */
 function categoryCounts(){
-  const counts={All:allTools.length,Favorites:favorites.length};
-  allTools.forEach(t=>counts[t.category]=(counts[t.category]||0)+1);
+  const counts = {All:allTools.length, Favorites:state.favorites.length};
+  allTools.forEach(t => counts[t.category] = (counts[t.category] || 0) + 1);
   return counts;
 }
-
 function renderCategories(){
-  const counts=categoryCounts();
-  const categories=[
-    ["All","🌟 All Resources"],
-    ["Favorites","⭐ Favorites"],
-    ["Programming","💻 Programming"],
-    ["Math","📐 Mathematics"],
-    ["Productivity","⏱️ Productivity"],
-    ["Physics","⚛️ Science & Physics"],
-    ["AI Tools","🤖 AI Utilities"],
-    ["Research","📚 Research"]
-  ];
-  const list=document.getElementById("categoryList");
-  list.replaceChildren();
-
-  categories.forEach(([key,label])=>{
-    const btn=document.createElement("button");
-    btn.type="button";
-    btn.className="cat-btn"+(currentCategory===key?" active":"");
-    btn.setAttribute("aria-pressed",currentCategory===key?"true":"false");
-    btn.innerHTML=`<span>${escapeHtml(label)}</span><span class="count-pill">${counts[key]||0}</span>`;
+  const icons = {"All":"🌟","Favorites":"⭐","Programming":"💻","Math":"📐","Productivity":"⏱️","Physics":"⚛️","AI Tools":"🤖"};
+  const counts = categoryCounts();
+  const cats = ["All","Favorites","Programming","Math","Productivity","Physics","AI Tools"];
+  $("categoryList").innerHTML = cats.map(cat => `
+    <button class="cat ${state.category===cat ? "active":""}" type="button" data-cat="${escapeHtml(cat)}"
+      aria-pressed="${state.category===cat}">
+      <span>${icons[cat]} ${escapeHtml(cat==="All"?"All Resources":cat)}</span>
+      <span class="count">${counts[cat] || 0}</span>
+    </button>`).join("");
+  document.querySelectorAll(".cat").forEach(btn=>{
     btn.addEventListener("click",()=>{
-      currentCategory=key;
-      currentPage=1;
-      renderCategories();
-      renderGrid();
+      state.category = btn.dataset.cat;
+      state.page = 1;
+      render();
     });
-    list.appendChild(btn);
   });
 }
-
-/* =========================
-   SEARCH / SORT / RENDER
-========================= */
-function getFilteredTools(){
-  let filtered=allTools.filter(tool=>{
-    const categoryMatch =
-      currentCategory==="All" ? true :
-      currentCategory==="Favorites" ? favorites.includes(tool.id) :
-      tool.category===currentCategory;
-
-    const haystack=(tool.title+" "+tool.desc+" "+tool.category+" "+tool.type+" "+tool.domain).toLowerCase();
-    return categoryMatch && (!searchQuery || haystack.includes(searchQuery));
+function scoreTool(t){
+  const q=state.query;
+  if(!q) return 0;
+  const fields=[t.title,t.category,t.desc,t.domain,t.type].map(x=>String(x).toLowerCase());
+  let score=0;
+  if(fields[0]===q) score+=100;
+  if(fields[0].startsWith(q)) score+=50;
+  fields.forEach((f,i)=>{
+    if(f.includes(q)) score += i===0 ? 30 : 10;
   });
-
-  const sort=document.getElementById("sortSelect").value;
-  if(sort==="az") filtered.sort((a,b)=>a.title.localeCompare(b.title));
-  if(sort==="za") filtered.sort((a,b)=>b.title.localeCompare(a.title));
-  if(sort==="category") filtered.sort((a,b)=>a.category.localeCompare(b.category)||a.title.localeCompare(b.title));
-  return filtered;
+  return score;
 }
+function filteredTools(){
+  let list=allTools.filter(t=>{
+    const catOk=state.category==="All" || (state.category==="Favorites" ? state.favorites.includes(t.id) : t.category===state.category);
+    const q=state.query;
+    const qOk=!q || [t.title,t.category,t.desc,t.domain,t.type].some(v=>String(v).toLowerCase().includes(q));
+    return catOk && qOk;
+  });
+  if(state.sort==="az") list.sort((a,b)=>a.title.localeCompare(b.title));
+  else if(state.sort==="za") list.sort((a,b)=>b.title.localeCompare(a.title));
+  else if(state.sort==="category") list.sort((a,b)=>a.category.localeCompare(b.category)||a.title.localeCompare(b.title));
+  else if(state.query) list.sort((a,b)=>scoreTool(b)-scoreTool(a));
+  return list;
+}
+function render(){
+  renderCategories();
+  const list=filteredTools();
+  const pages=Math.max(1,Math.ceil(list.length/state.perPage));
+  if(state.page>pages) state.page=pages;
+  const start=(state.page-1)*state.perPage;
+  const items=list.slice(start,start+state.perPage);
+  $("resultCount").textContent=`${list.length} ${list.length===1?"resource":"resources"} found`;
+  $("pageInfo").textContent=`Page ${state.page} of ${pages}`;
+  $("prevBtn").disabled=state.page<=1;
+  $("nextBtn").disabled=state.page>=pages;
 
-function renderGrid(){
-  const grid=document.getElementById("toolsGrid");
-  const filtered=getFilteredTools();
-  const totalPages=Math.max(1,Math.ceil(filtered.length/itemsPerPage));
-  if(currentPage>totalPages) currentPage=totalPages;
+  if(!items.length){
+    $("toolsGrid").innerHTML=`<div class="empty"><strong>No matching resources</strong><br><span>Try a different search or category.</span></div>`;
+    return;
+  }
+  $("toolsGrid").innerHTML=items.map(t=>{
+    const fav=state.favorites.includes(t.id);
+    const url=safeUrl(t.url);
+    return `<article class="card">
+      <div class="card-top">
+        <span class="chip">${escapeHtml(t.category)}</span>
+        <button class="fav ${fav?"active":""}" type="button" data-fav="${t.id}" aria-label="${fav?"Remove":"Add"} ${escapeHtml(t.title)} ${fav?"from":"to"} favorites" aria-pressed="${fav}">★</button>
+      </div>
+      <h2 class="title">${escapeHtml(t.title)}</h2>
+      <p class="desc">${escapeHtml(t.desc)}</p>
+      <div class="meta">
+        <span class="chip">${escapeHtml(t.type || t.category)}</span>
+        ${t.verified ? `<span class="chip verified">✓ Verified</span>` : ""}
+        <span class="domain" title="${escapeHtml(t.domain||"")}">${escapeHtml(t.domain||"")}</span>
+      </div>
+      <a class="open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(t.title)}</a>
+    </article>`;
+  }).join("");
 
-  const start=(currentPage-1)*itemsPerPage;
-  const pageItems=filtered.slice(start,start+itemsPerPage);
-  grid.replaceChildren();
+  document.querySelectorAll("[data-fav]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const id=Number(btn.dataset.fav);
+      if(state.favorites.includes(id)){
+        state.favorites=state.favorites.filter(x=>x!==id);
+        showToast("Removed from Favorites");
+      }else{
+        state.favorites.push(id);
+        showToast("Added to Favorites ⭐");
+      }
+      saveFavorites();
+      render();
+    });
+  });
+}
+$("searchInput").addEventListener("input",e=>{
+  state.query=e.target.value.toLowerCase().trim();
+  state.page=1;
+  render();
+});
+$("sortSelect").addEventListener("change",e=>{
+  state.sort=e.target.value;
+  state.page=1;
+  render();
+});
+$("prevBtn").addEventListener("click",()=>{if(state.page>1){state.page--;render();scrollToMain();}});
+$("nextBtn").addEventListener("click",()=>{state.page++;render();scrollToMain();});
+function scrollToMain(){window.scrollTo({top:0,behavior:"smooth"});}
 
-  document.getElementById("resourceCount").textContent=filtered.length;
-  document.getElementById("pageIndicator").textContent=`Page ${currentPage} of ${totalPages}`;
-  document.getElementById("prevBtn").disabled=currentPage===1;
-  document.getElementById("nextBtn").disabled=currentPage>=totalPages;
-  document.getElementById("clearSearch").style.display=searchQuery?"block":"none";
+function setTheme(theme){
+  document.documentElement.dataset.theme=theme;
+  localStorage.setItem("nexus_theme_v4",theme);
+}
+function initTheme(){
+  const saved=localStorage.getItem("nexus_theme_v4");
+  const theme=saved || (matchMedia("(prefers-color-scheme:light)").matches ? "light":"dark");
+  setTheme(theme);
+}
+$("themeBtn").addEventListener("click",()=>{
+  const next=document.documentElement.dataset.theme==="light"?"dark":"light";
+  setTheme(next);
+  showToast(`Switched to ${next} mode`);
+});
+$("exportBtn").addEventListener("click",()=>{
+  const favs=allTools.filter(t=>state.favorites.includes(t.id));
+  if(!favs.length){showToast("No favorites to export");return;}
+  const blob=new Blob([JSON.stringify(favs,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="nexus-favorites.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  showToast("Favorites exported");
+});
 
-  if(!pageItems.length){
-    const empty=document.createElement("div");
-    empty.className="empty-state";
-    empty.innerHTML="<strong>No matching resources</strong><span>Try another search or choose a different category.</span>";
-    grid.appendChild(empty);
+const ai={
+  panel:$("aiPanel"),fab:$("aiFab"),input:$("aiInput"),form:$("aiForm"),send:$("sendBtn"),
+  log:$("chatLog"),typing:$("typing"),status:$("aiStatus")
+};
+function openAI(){
+  ai.panel.classList.add("open");ai.panel.setAttribute("aria-hidden","false");ai.fab.setAttribute("aria-expanded","true");
+  setTimeout(()=>ai.input.focus(),50);
+}
+function closeAI(){
+  if(state.aiBusy) return;
+  ai.panel.classList.remove("open");ai.panel.setAttribute("aria-hidden","true");ai.fab.setAttribute("aria-expanded","false");
+}
+ai.fab.addEventListener("click",()=>ai.panel.classList.contains("open")?closeAI():openAI());
+$("closeAi").addEventListener("click",closeAI);
+$("clearChat").addEventListener("click",()=>{
+  if(state.aiBusy)return;
+  ai.log.innerHTML=`<div class="msg assistant">Conversation cleared. What would you like to study?</div>`;
+  ai.status.classList.remove("show");
+  ai.input.focus();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && ai.panel.classList.contains("open")) closeAI();
+});
+function addMessage(text,type){
+  const node=document.createElement("div");
+  node.className=`msg ${type}`;
+  node.textContent=text;
+  ai.log.appendChild(node);
+  ai.log.scrollTop=ai.log.scrollHeight;
+  return node;
+}
+function setBusy(busy){
+  state.aiBusy=busy;
+  ai.send.disabled=busy;
+  ai.input.disabled=busy;
+  ai.typing.classList.toggle("show",busy);
+  if(busy) ai.log.scrollTop=ai.log.scrollHeight;
+}
+function historyForBackend(){
+  return [...ai.log.querySelectorAll(".msg")].map(n=>({
+    role:n.classList.contains("user")?"user":"assistant",
+    content:n.textContent
+  })).slice(-20);
+}
+async function sendAIPrompt(){
+  if(state.aiBusy)return;
+  const text=ai.input.value.trim();
+  if(!text)return;
+  addMessage(text,"user");
+  ai.input.value="";
+  ai.input.style.height="auto";
+  setBusy(true);
+  ai.status.classList.remove("show");
+
+  if(!AI_ENDPOINT){
+    await new Promise(r=>setTimeout(r,250));
+    addMessage("The AI backend is not connected yet. This version intentionally does not fake an answer. Set AI_ENDPOINT in the script to your own /api/chat backend; your API key should stay on that server.","assistant");
+    setBusy(false);
+    ai.input.disabled=false;
+    ai.input.focus();
     return;
   }
 
-  const fragment=document.createDocumentFragment();
-
-  pageItems.forEach(tool=>{
-    const card=document.createElement("article");
-    card.className="tool-card";
-    const isFav=favorites.includes(tool.id);
-
-    card.innerHTML=`
-      <div>
-        <div class="card-header">
-          <span class="badge">${escapeHtml(tool.category)}</span>
-          <button class="fav-btn ${isFav?"active":""}" type="button"
-            aria-label="${isFav?"Remove":"Add"} ${escapeHtml(tool.title)} ${isFav?"from":"to"} favorites"
-            aria-pressed="${isFav}">
-            ${isFav?"★":"☆"}
-          </button>
-        </div>
-        <div class="tool-title">${escapeHtml(tool.title)}</div>
-        <div class="tool-desc">${escapeHtml(tool.desc)}</div>
-        <div class="tool-meta">
-          <span class="badge">${escapeHtml(tool.type||tool.category)}</span>
-          ${tool.verified?'<span class="badge" style="color:var(--success);background:rgba(16,185,129,.12)">✓ Verified</span>':""}
-          <span class="domain" title="${escapeHtml(tool.domain||"")}">${escapeHtml(tool.domain||"")}</span>
-        </div>
-      </div>
-      <div class="action-btns">
-        <a class="btn-small btn-primary-sm" href="${escapeHtml(safeUrl(tool.url))}" target="_blank" rel="noopener noreferrer">Open Utility ↗</a>
-      </div>`;
-
-    card.querySelector(".fav-btn").addEventListener("click",()=>toggleFav(tool.id));
-    fragment.appendChild(card);
-  });
-
-  grid.appendChild(fragment);
-}
-
-function toggleFav(id){
-  if(favorites.includes(id)){
-    favorites=favorites.filter(x=>x!==id);
-    showToast("Removed from favorites");
-  }else{
-    favorites.push(id);
-    showToast("Added to favorites ⭐");
-  }
-  saveFavorites();
-  renderCategories();
-  renderGrid();
-}
-
-function changePage(delta){
-  const total=Math.max(1,Math.ceil(getFilteredTools().length/itemsPerPage));
-  currentPage=Math.min(total,Math.max(1,currentPage+delta));
-  renderGrid();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-/* =========================
-   THEME
-========================= */
-function applyTheme(theme){
-  document.documentElement.setAttribute("data-theme",theme);
-  try{localStorage.setItem(STORAGE_KEYS.theme,theme)}catch{}
-  const light=theme==="light";
-  document.getElementById("themeBtn").textContent=light?"🌙":"☀️";
-  document.getElementById("themeBtn").title=light?"Switch to dark mode":"Switch to light mode";
-}
-
-function initTheme(){
-  let saved=null;
-  try{saved=localStorage.getItem(STORAGE_KEYS.theme)}catch{}
-  const systemLight=window.matchMedia?.("(prefers-color-scheme: light)").matches;
-  applyTheme(saved==="light"||saved==="dark"?saved:(systemLight?"light":"dark"));
-}
-
-/* =========================
-   EXPORT
-========================= */
-function exportFavorites(){
-  const favItems=allTools.filter(t=>favorites.includes(t.id));
-  if(!favItems.length){showToast("No favorites to export.",true);return}
-
-  const blob=new Blob([JSON.stringify(favItems,null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob);
-  const anchor=document.createElement("a");
-  anchor.href=url;
-  anchor.download="nexus-favorites.json";
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-  showToast("Favorites exported successfully");
-}
-
-/* =========================
-   AI UI
-   Replace requestAI() with your real backend later.
-========================= */
-const AI_ENDPOINT = ""; 
-// Example when backend exists:
-// const AI_ENDPOINT = "/api/chat";
-
-function setAIOpen(open){
-  const modal=document.getElementById("aiModal");
-  modal.classList.toggle("active",open);
-  modal.setAttribute("aria-hidden",String(!open));
-  document.getElementById("aiFloatBtn").setAttribute("aria-expanded",String(open));
-  if(open) setTimeout(()=>document.getElementById("aiInput").focus(),50);
-}
-
-function appendMessage(text,type){
-  const msg=document.createElement("div");
-  msg.className=`msg ${type}`;
-  msg.textContent=text;
-  const indicator=document.getElementById("typingIndicator");
-  document.getElementById("aiChatLog").insertBefore(msg,indicator);
-  document.getElementById("aiChatLog").scrollTop=document.getElementById("aiChatLog").scrollHeight;
-}
-
-async function requestAI(text){
-  if(!AI_ENDPOINT){
-    await new Promise(resolve=>setTimeout(resolve,500));
-    return "The AI interface is ready. Add your secure backend endpoint in AI_ENDPOINT to enable live answers.";
-  }
-
   const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),20000);
-
+  state.aiAbort=controller;
+  const timer=setTimeout(()=>controller.abort(),30000);
   try{
     const response=await fetch(AI_ENDPOINT,{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({message:text}),
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({message:text,history:historyForBackend()}),
       signal:controller.signal
     });
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const data=await response.json();
-    return data.reply || data.message || "The server returned no answer.";
+    const answer=typeof data.answer==="string"?data.answer:
+      typeof data.message==="string"?data.message:
+      typeof data.output==="string"?data.output:"";
+    if(!answer) throw new Error("Invalid AI response");
+    addMessage(answer,"assistant");
+  }catch(err){
+    const msg=err.name==="AbortError"
+      ?"The AI request timed out. Please try again."
+      :"I couldn't reach the AI service. Check your backend and try again.";
+    addMessage(msg,"assistant");
+    ai.status.textContent="AI service unavailable";
+    ai.status.classList.add("show");
   }finally{
-    clearTimeout(timeout);
+    clearTimeout(timer);
+    state.aiAbort=null;
+    setBusy(false);
+    ai.input.disabled=false;
+    ai.input.focus();
   }
 }
-
-async function sendAIPrompt(){
-  const input=document.getElementById("aiInput");
-  const sendBtn=document.getElementById("sendBtn");
-  const text=input.value.trim();
-  if(!text || sendBtn.disabled)return;
-
-  appendMessage(text,"user");
-  input.value="";
-  sendBtn.disabled=true;
-
-  const indicator=document.getElementById("typingIndicator");
-  indicator.style.display="block";
-  document.getElementById("aiChatLog").scrollTop=document.getElementById("aiChatLog").scrollHeight;
-
-  try{
-    const answer=await requestAI(text);
-    appendMessage(answer,"assistant");
-  }catch(error){
-    appendMessage(error.name==="AbortError"
-      ?"The request took too long. Please try again."
-      :"I couldn't connect to the AI service. Please try again later.","assistant");
-  }finally{
-    indicator.style.display="none";
-    sendBtn.disabled=false;
-    input.focus();
-  }
-}
-
-/* =========================
-   EVENTS
-========================= */
-document.getElementById("searchInput").addEventListener("input",e=>{
-  clearTimeout(searchTimer);
-  searchTimer=setTimeout(()=>{
-    searchQuery=e.target.value.toLowerCase().trim();
-    currentPage=1;
-    renderGrid();
-  },180);
-});
-
-document.getElementById("clearSearch").addEventListener("click",()=>{
-  const input=document.getElementById("searchInput");
-  input.value="";
-  searchQuery="";
-  currentPage=1;
-  renderGrid();
-  input.focus();
-});
-
-document.getElementById("sortSelect").addEventListener("change",()=>{
-  currentPage=1;
-  renderGrid();
-});
-
-document.getElementById("prevBtn").addEventListener("click",()=>changePage(-1));
-document.getElementById("nextBtn").addEventListener("click",()=>changePage(1));
-
-document.getElementById("themeBtn").addEventListener("click",()=>{
-  const current=document.documentElement.getAttribute("data-theme");
-  applyTheme(current==="light"?"dark":"light");
-});
-
-document.getElementById("exportBtn").addEventListener("click",exportFavorites);
-
-document.getElementById("aiFloatBtn").addEventListener("click",()=>{
-  const modal=document.getElementById("aiModal");
-  setAIOpen(!modal.classList.contains("active"));
-});
-document.getElementById("aiClose").addEventListener("click",()=>setAIOpen(false));
-document.getElementById("aiForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  sendAIPrompt();
-});
-
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    const modal=document.getElementById("aiModal");
-    if(modal.classList.contains("active")) setAIOpen(false);
+ai.form.addEventListener("submit",e=>{e.preventDefault();sendAIPrompt();});
+ai.input.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && !e.shiftKey){
+    e.preventDefault();
+    ai.form.requestSubmit();
   }
 });
+ai.input.addEventListener("input",()=>{
+  ai.input.style.height="auto";
+  ai.input.style.height=Math.min(ai.input.scrollHeight,120)+"px";
+});
 
-/* =========================
-   START
-========================= */
 initTheme();
-renderCategories();
-renderGrid();
+render();
 </script>
 </body>
 </html>
