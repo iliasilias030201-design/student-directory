@@ -91,7 +91,12 @@
         .assistant-input-row input { flex: 1; margin-bottom: 0; }
         .assistant-send-btn { background: #8b5cf6; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .assistant-send-btn:hover { background: #7c3aed; }
-    </style>
+    
+    * { pointer-events: auto !important; }
+    body { pointer-events: auto !important; overflow-y: auto !important; }
+    .container, .workspace-grid, .assistant-panel, button, input { pointer-events: auto !important; position: relative; z-index: 10; }
+</style>
+
 
 
 
@@ -101,9 +106,7 @@
 
 <body>
     <!-- Welcome Guidance Popup -->
-    <div id="welcomeModal" class="welcome-modal">
-        <div class="welcome-content">
-            <div class="live-badge"><span class="live-dot"></span> Live Student Hub</div>
+    
             <h2 id="welcomeTitle">Hey there! 👋</h2>
             <p id="welcomeDesc">Welcome to your ultimate curated directory. Search through 500+ top-tier tools, drop upvotes on your daily drivers, or submit a missing resource instantly.</p>
             <button class="welcome-btn" id="diveInBtn" onclick="closeWelcome()">Dive In &rarr;</button>
