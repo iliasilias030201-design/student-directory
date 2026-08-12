@@ -5,28 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Pro 43 - Features, Pricing & Student Review</title>
-    <meta name="description" content="Explore GitHub Pro 43 features, pricing, and specs for students.">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 2rem; margin: 0; }
-        .card { background: #1e293b; padding: 2rem; border-radius: 12px; max-width: 700px; margin: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --meta: #94a3b8; --border: #334155; }
+        body.light { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --meta: #64748b; --border: #e2e8f0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; transition: background 0.3s, color 0.3s; }
+        .card { background: var(--card); padding: 2rem; border-radius: 12px; max-width: 700px; margin: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1px solid var(--border); }
         .badge { background: #3b82f6; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-transform: uppercase; }
         .price { color: #38bdf8; font-weight: bold; }
+        .rating { color: #fbbf24; font-weight: bold; margin: 10px 0; }
         .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 1rem; }
-        .feature-tag { background: #334155; padding: 6px 10px; border-radius: 4px; font-size: 0.85rem; color: #cbd5e1; }
+        .feature-tag { background: var(--border); padding: 6px 10px; border-radius: 4px; font-size: 0.85rem; color: var(--text); }
+        .alternatives { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--meta); }
         a.btn { display: inline-block; background: #22c55e; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 1.5rem; }
-        a.back { color: #94a3b8; text-decoration: none; display: inline-block; margin-top: 1.5rem; }
+        a.back { color: var(--meta); text-decoration: none; display: inline-block; margin-top: 1.5rem; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>GitHub Pro 43</h1>
         <span class="badge">Programming</span>
+        <div class="rating">&#9733; 4.7 / 5.0 (750 student reviews)</div>
         <p><strong>Pricing:</strong> <span class="price">Open Source</span></p>
         <p>Platform for version control and collaborating on software projects. (Edition 43 optimized for advanced academic workflows).</p>
         
         <h3>Core Features (30 Built-in Specifications):</h3>
         <div class="features-grid">
             <div class="feature-tag">&#10003; Cloud Sync</div><div class="feature-tag">&#10003; Dark Mode</div><div class="feature-tag">&#10003; API Access</div><div class="feature-tag">&#10003; Export PDF</div><div class="feature-tag">&#10003; Mobile App</div><div class="feature-tag">&#10003; Offline Mode</div><div class="feature-tag">&#10003; Collaborative</div><div class="feature-tag">&#10003; Custom Themes</div><div class="feature-tag">&#10003; Keyboard Shortcuts</div><div class="feature-tag">&#10003; Extensions</div><div class="feature-tag">&#10003; Markdown Support</div><div class="feature-tag">&#10003; Version History</div><div class="feature-tag">&#10003; Encrypted</div><div class="feature-tag">&#10003; Embeddable</div><div class="feature-tag">&#10003; Templates</div><div class="feature-tag">&#10003; Analytics</div><div class="feature-tag">&#10003; Multi-language</div><div class="feature-tag">&#10003; Free Tier</div><div class="feature-tag">&#10003; No Ads</div><div class="feature-tag">&#10003; Open Source Code</div><div class="feature-tag">&#10003; Webhooks</div><div class="feature-tag">&#10003; Single Sign-On</div><div class="feature-tag">&#10003; Priority Support</div><div class="feature-tag">&#10003; Custom Domain</div><div class="feature-tag">&#10003; Auto-Save</div><div class="feature-tag">&#10003; Task Board</div><div class="feature-tag">&#10003; Voice Notes</div><div class="feature-tag">&#10003; Code Highlighting</div><div class="feature-tag">&#10003; Interactive Charts</div><div class="feature-tag">&#10003; Daily Backups</div>
+        </div>
+
+        <div class="alternatives">
+            <strong>Looking for alternatives?</strong> Check other tools under <a href="index.html" style="color: #38bdf8;">Programming Category</a>.
         </div>
 
         <a class="btn" href="https://github.com" target="_blank">Visit Official Website &rarr;</a>
