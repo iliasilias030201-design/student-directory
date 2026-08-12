@@ -444,7 +444,19 @@
             chatLog.scrollTop = chatLog.scrollHeight;
 
             setTimeout(() => {
-                let reply = `I've analyzed your query regarding "${text}". As your Gemini 2.5 assistant, I recommend checking out our verified programming and mathematics tool nodes for precise references!`;
+                let queryLower = text.toLowerCase();
+                let reply = "";
+
+                if(queryLower.includes('python') || queryLower.includes('code')) {
+                    reply = `For Python development, remember that loops and scripts run sequentially. Try using standard libraries or check out our Python 3.12 documentation card on the hub!`;
+                } else if(queryLower.includes('math') || queryLower.includes('integral') || queryLower.includes('equation')) {
+                    reply = `For advanced mathematics, breaking down equations step-by-step or using Wolfram|Alpha / Desmos from our math category will give you exact computational graphs and solutions.`;
+                } else if(queryLower.includes('physics') || queryLower.includes('force')) {
+                    reply = `Physics problem solving relies heavily on isolating variables. PhET simulations can help visualize these concepts interactively.`;
+                } else {
+                    reply = `That's a great question about "${text}". To tackle this effectively, make sure to organize your notes clearly, and use the search bar above to filter relevant tools!`;
+                }
+
                 chatLog.innerHTML += `<div class="msg assistant">${reply}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
             }, 600);
